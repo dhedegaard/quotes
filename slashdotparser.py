@@ -142,7 +142,7 @@ def main(sleeptime=SLEEP_TIME_SECONDS):
             # attempt to save the quote.
             saved = save_quote_in_table(logger, quote)
             if saved:
-                logger.info('\tNew quote saved: %s' % quote)
+                logger.info('\tNew quote saved')
             else:
                 logger.info('\tQuote already in the table.')
         except Exception, error:
@@ -153,4 +153,4 @@ def main(sleeptime=SLEEP_TIME_SECONDS):
         time.sleep(sleeptime)
 
 if __name__ == '__main__':
-    main(10)
+    main()
