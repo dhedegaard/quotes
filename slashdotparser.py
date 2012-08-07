@@ -13,14 +13,19 @@ SLEEP_TIME_SECONDS = 60 * 10
 DBNAME = 'slashdot'
 DBUSER = 'slashdot'
 
+import os
 import httplib
 import psycopg2
 import HTMLParser
 import logging
+import logging.handlers
 import time
 
 __author__ = 'Dennis Hedegaard'
 __version__ = 0.1
+
+LOGFILE = os.path.abspath(os.path.dirname(__file__)) + \
+    os.sep + 'slashdotparser.log'
 
 class SlashdotParser(HTMLParser.HTMLParser):
     '''
@@ -42,7 +47,7 @@ class SlashdotParser(HTMLParser.HTMLParser):
         if self.in_blockquote and tag == 'blockquote':
             self.in_blockquote = False
 
-def get_slashdot_body(logger):
+def get_slashdot_body():
     '''
     Returns the body from the slashdot website,
     if this fails None is returned, else the body.
@@ -56,14 +61,14 @@ def get_slashdot_body(logger):
         result = resp.read()
     except httplib.HTTPException, error:
         result = None
-        logger.debug('Unable to get slashdot body because: %s'
-                     % error)
+        logging.debug('Unable to get slashdot body because: %s',
+                      error)
     finally:
         resp.close()
         con.close()
     return result
 
-def parse_slashdot_body(logger, body):
+def parse_slashdot_body(body):
     '''
     Parses the html of slashdot.org's website and returns the quote
     contained on the website.
@@ -75,10 +80,10 @@ def parse_slashdot_body(logger, body):
         parser.close()
         return parser.quote
     except HTMLParser.HTMLParseError, error:
-        logger.debug('Unable to parse quote from body, because: %s' % error)
+        logging.debug('Unable to parse quote from body, because: %s', error)
         return None
 
-def save_quote_in_table(logger, quote, dbname=DBNAME, dbuser=DBUSER):
+def save_quote_in_table(quote, dbname=DBNAME, dbuser=DBUSER):
     '''
     Saves the quote specified in the database.
 
@@ -100,7 +105,7 @@ def save_quote_in_table(logger, quote, dbname=DBNAME, dbuser=DBUSER):
         conn.rollback()
         # pgcode 23505 is unique key constraint on table column.
         if error.pgcode != '23505':
-            logger.error('psycopg2.IntegrityError pgcode: %s' % error.pgcode)
+            logging.error('psycopg2.IntegrityError pgcode: %s', error.pgcode)
         return False
     finally:
         cur.close()
@@ -117,40 +122,58 @@ class SlashdotLogHandler(logging.StreamHandler):
     def emit(self, record):
         print '[%s]: %s' % (time.strftime('%Y-%m-%d %T'), record.getMessage())
 
+def _setup_logging():
+    '''
+    Initializes logging for the application, this is usually done from the mail method.
+    '''
+    logging.basicConfig()
+    logger = logging.getLogger()
+    logger.addHandler(logging.StreamHandler())
+    logger.addHandler(logging.handlers.TimedRotatingFileHandler(LOGFILE,
+                                                                'midnight',
+                                                                1,
+                                                                backupCount=7))
+    logger.setLevel(logging.DEBUG)
+
+
 def main(sleeptime=SLEEP_TIME_SECONDS):
     '''
     This function starts the main loop. Run this to run the application.
 
     When the method is called, a loop runs forever.
     '''
-    logger = logging.Logger('slashdot-parser')
-    logger.addHandler(SlashdotLogHandler())
 
-    while True:
-        logger.debug('connecting to slashdot..')
+    _setup_logging()
+    logging.warning('starting mainloop.. sleeptime is %.1f seconds', sleeptime)
 
-        try:
-            # get slashdot HTML.
-            body = get_slashdot_body(logger)
-            if body == None:
-                continue
+    try:
+        while True:
+            logging.debug('connecting to slashdot..')
+
+            try:
+                # get slashdot HTML.
+                body = get_slashdot_body()
+                if body == None:
+                    continue
             # parse quote from the body.
-            quote = parse_slashdot_body(logger, body)
-            if quote == None:
-                continue
-            logger.debug('\tquote: %s' % quote)
+                quote = parse_slashdot_body(body)
+                if quote == None:
+                    continue
+                logging.debug('\tquote: %s', quote)
             # attempt to save the quote.
-            saved = save_quote_in_table(logger, quote)
-            if saved:
-                logger.info('\tNew quote saved')
-            else:
-                logger.info('\tQuote already in the table.')
-        except Exception, error:
-            logger.error('\tUncaught exception(%s): %s' %
-                         (error.__class__.__name__, error))
+                saved = save_quote_in_table(quote)
+                if saved:
+                    logging.info('\tNew quote saved')
+                else:
+                    logging.info('\tQuote already in the table.')
+            except Exception, error:
+                logging.error('\tUncaught exception(%s): %s',
+                              str(error.__class__.__name__), error)
 
-        logger.info('sleeping...')
-        time.sleep(sleeptime)
+            logging.debug('sleeping...')
+            time.sleep(sleeptime)
+    except KeyboardInterrupt:
+        logging.warning('Interrupt received, shutting down.')
 
 if __name__ == '__main__':
     main()
