@@ -112,16 +112,6 @@ def save_quote_in_table(quote, dbname=DBNAME, dbuser=DBUSER):
         conn.close()
     return True
 
-class SlashdotLogHandler(logging.StreamHandler):
-    '''
-    A simple log handler that emits the message of the record
-    with date and time in front. As in:
-
-    [YY-MM-DD hh-mm-ss] message
-    '''
-    def emit(self, record):
-        print '[%s]: %s' % (time.strftime('%Y-%m-%d %T'), record.getMessage())
-
 def _setup_logging():
     '''
     Initializes logging for the application, this is usually done from the mail method.
