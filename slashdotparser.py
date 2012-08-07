@@ -24,8 +24,11 @@ import time
 __author__ = 'Dennis Hedegaard'
 __version__ = 0.1
 
-LOGFILE = os.path.abspath(os.path.dirname(__file__)) + \
-    os.sep + 'slashdotparser.log'
+try:
+    LOGFILE = os.path.abspath(os.path.dirname(__file__)) + \
+        os.sep + 'slashdotparser.log'
+except NameError:
+    LOGFILE = 'slashdotparser.log'
 
 class SlashdotParser(HTMLParser.HTMLParser):
     '''
