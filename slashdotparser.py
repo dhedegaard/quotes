@@ -16,7 +16,7 @@ DBUSER = 'slashdot'
 import os
 import httplib
 import psycopg2
-import HTMLParser
+from HTMLParser import HTMLParser
 import logging
 import logging.handlers
 import time
@@ -25,18 +25,20 @@ __author__ = 'Dennis Hedegaard'
 __version__ = 0.1
 
 try:
-    LOGFILE = os.path.abspath(os.path.dirname(__file__)) + \
-        os.sep + 'slashdotparser.log'
+    LOGFILE = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), 'slashdotparser.log'))
 except NameError:
     LOGFILE = 'slashdotparser.log'
 
-class SlashdotParser(HTMLParser.HTMLParser):
+class SlashdotParser(HTMLParser):
     '''
     A simple specialization of HTMLParser, that can find and log the quote of
     the slashdot website.
     '''
-    in_blockquote = False
-    quote = None
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.in_blockquote = False
+        self.quote = None
 
     def handle_starttag(self, tag, _):
         if tag == 'blockquote':
@@ -78,7 +80,6 @@ def parse_slashdot_body(body):
     '''
     parser = SlashdotParser()
     try:
-        parser.quote = None
         parser.feed(body)
         parser.close()
         return parser.quote
@@ -121,11 +122,9 @@ def _setup_logging():
     '''
     logging.basicConfig()
     logger = logging.getLogger()
+    logger.addHandler(logging.handlers.TimedRotatingFileHandler(
+        LOGFILE, 'midnight', 1, backupCount=7))
     logger.addHandler(logging.StreamHandler())
-    logger.addHandler(logging.handlers.TimedRotatingFileHandler(LOGFILE,
-                                                                'midnight',
-                                                                1,
-                                                                backupCount=7))
     logger.setLevel(logging.DEBUG)
 
 
@@ -148,20 +147,19 @@ def main(sleeptime=SLEEP_TIME_SECONDS):
                 body = get_slashdot_body()
                 if body == None:
                     continue
-            # parse quote from the body.
+                # parse quote from the body.
                 quote = parse_slashdot_body(body)
                 if quote == None:
                     continue
                 logging.debug('\tquote: %s', quote)
-            # attempt to save the quote.
+                # attempt to save the quote.
                 saved = save_quote_in_table(quote)
                 if saved:
                     logging.info('\tNew quote saved')
                 else:
                     logging.info('\tQuote already in the table.')
             except Exception, error:
-                logging.error('\tUncaught exception(%s): %s',
-                              str(error.__class__.__name__), error)
+                logging.exception(error)
 
             logging.debug('sleeping...')
             time.sleep(sleeptime)

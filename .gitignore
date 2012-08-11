@@ -48,4 +48,4 @@ java.policy.applet
 javadoc
 *.suo
 
-slashdotparser.log
+slashdotparser.log*

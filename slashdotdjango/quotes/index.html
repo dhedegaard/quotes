@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <p>page: {{ page }}</p>
+    <p>page_count: {{ page_count }}</p>
+    {% if quotes %}
+    <table border="1">
+       <tr>
+	<th>Created</th>
+	<th>Quote</th>
+      </tr>
+      {% for quote in quotes %}
+      <tr>
+	<td>{{ quote.created }}</td>
+	<td>
+	  <pre>
+	    {{ quote.quote }}
+	  </pre>
+	</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <p>No quotes in the database.</p>
+    {% endif %}
+  </body>
+</html>
