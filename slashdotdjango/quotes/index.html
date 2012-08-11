@@ -1,30 +1,40 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>{{ title }}</title>
-  </head>
-  <body>
-    <p>page: {{ page }}</p>
-    <p>page_count: {{ page_count }}</p>
-    {% if quotes %}
-    <table border="1">
-       <tr>
+{% extends 'quotes/base.html' %}
+
+{% block title %}Slashdot Quotes Database{% endblock %}
+
+{% block content %}
+<h1>Slashdot Quotes Database</h1>
+<p>This is a simple webinterface for a database containing quotes gathered
+from the <a href="http://slashdot.org/">Slashdot website</a>. Searching in
+quotes and sorting by date gathered.</p>
+<hr />
+{% if quotes %}
+  {% include 'quotes/paginator.html' %}
+  <div style="width: 100%; text-align: center;">
+
+    <table border="1" style="text-align: left;">
+      <tr>
 	<th>Created</th>
 	<th>Quote</th>
       </tr>
       {% for quote in quotes %}
       <tr>
-	<td>{{ quote.created }}</td>
+	<td>{{ quote.created|date:'Y-m-d H:i' }}</td>
 	<td>
-	  <pre>
-	    {{ quote.quote }}
-	  </pre>
+	  <pre>{{ quote.quote }}</pre>
 	</td>
       </tr>
       {% endfor %}
+      <tr>
+	<th>Created</th>
+	<th>Quote</th>
+      </tr>
     </table>
-    {% else %}
-    <p>No quotes in the database.</p>
-    {% endif %}
-  </body>
-</html>
+  </div>
+  {% include 'quotes/paginator.html' %}
+</p>
+{% else %}
+  <p>No quotes in the database.</p>
+{% endif %}
+<hr />
+{% endblock %}

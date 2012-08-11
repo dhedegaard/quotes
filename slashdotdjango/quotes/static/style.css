@@ -1,0 +1,9 @@
+.paginator_link {
+    color: #334499;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.paginator_current_page {
+    font-weight: bold;
+}

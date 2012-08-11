@@ -1,0 +1,23 @@
+<div style="text-align: center; width=100%;">
+  {% if page > 1 %}
+  <a class="paginator_link" href="{% url quotes.views.index 1 %}"><<</a>
+  <a class="paginator_link" href="{% url quotes.views.index page|add:"-1" %}"><</a>
+  {% else %}
+  <span><<</span>
+  <span><</span>
+  {% endif %}
+  {% for p in pagelist %}
+  {% if p == page %}
+  <span class="paginator_current_page">{{ p }}</span>
+  {% else %}
+  <a class="paginator_link" href="{% url quotes.views.index p %}">{{ p }}</a>
+  {% endif %}
+  {% endfor %}
+  {% if page < pagecount %}
+  <a class="paginator_link" href="{% url quotes.views.index page|add:"1" %}">></a>
+  <a class="paginator_link" href="{% url quotes.views.index pagecount %}">>></a>
+  {% else %}
+  <span>></span>
+  <span>>></span>
+  {% endif %}
+</div>
