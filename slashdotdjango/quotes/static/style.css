@@ -2,6 +2,15 @@ body {
     font-family: sans-serif;
 }
 
+.fill {
+    width: 100%;
+}
+
+.right {
+    text-align: right;
+    margin-left: auto;
+}
+
 .paginator_link, .paginator_disabled {
     font-size: smaller;
 }

@@ -1,11 +1,11 @@
 {% if page > 1 %}
-  <a class="paginator_link" href="{% url quotes.views.index 1 %}"><< first</a>
+  <a class="paginator_link" href="{% url quotes.views.index 1 %}">&lt;&lt; first</a>
   <span class="paginator_separator">|</span>							      
-  <a class="paginator_link" href="{% url quotes.views.index page|add:"-1" %}">< prev</a>
+  <a class="paginator_link" href="{% url quotes.views.index page|add:"-1" %}">&lt; prev</a>
 {% else %}
-  <span class="paginator_disabled"><< first</span>
+  <span class="paginator_disabled">&lt;&lt; first</span>
   <span class="paginator_separator">|</span>
-  <span class="paginator_disabled">< prev</span>
+  <span class="paginator_disabled">&lt; prev</span>
 {% endif %}
 <span class="paginator_separator">|</span>
 {% for p in pagelist %}
@@ -20,11 +20,11 @@
 {% endfor %}
 <span class="paginator_separator">|</span>
 {% if page < pagecount %}
-  <a class="paginator_link" href="{% url quotes.views.index page|add:"1" %}">next ></a>
+  <a class="paginator_link" href="{% url quotes.views.index page|add:"1" %}">next &gt;</a>
   <span class="paginator_separator">|</span>
-  <a class="paginator_link" href="{% url quotes.views.index pagecount %}">last >></a>
+  <a class="paginator_link" href="{% url quotes.views.index pagecount %}">last &gt;&gt;</a>
 {% else %}
-  <span class="paginator_disabled">next ></span>
+  <span class="paginator_disabled">next &gt;</span>
   <span class="paginator_separator"></span>
-  <span class="paginator_disabled">last >></span>
+  <span class="paginator_disabled">last &gt;&gt;</span>
 {% endif %}
