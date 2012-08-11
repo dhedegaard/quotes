@@ -1,9 +1,62 @@
+body {
+    font-family: sans-serif;
+}
+
+.paginator_link, .paginator_disabled {
+    font-size: smaller;
+}
+
+.paginator_separator {
+    font-size: xx-small;
+}
+
 .paginator_link {
-    color: #334499;
+    color: #2233bb;
     text-decoration: none;
     font-weight: bold;
 }
 
-.paginator_current_page {
+.paginator_disabled {
     font-weight: bold;
+}
+
+span.paginator {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: block;
+    font-family: Courier New, monospace;
+    font-size: small;
+}
+
+div.fill {
+    width: 100%;
+}
+
+div.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+table#quotes {
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+td.created, td.quote {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+td {
+    text-align: left;
+}
+
+tr.even, tr.top {
+    background-color: #ddeeff;
+}
+
+tr.odd, tr.bottom {
+    background-color: #f3faff;
 }

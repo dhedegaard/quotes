@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
+from django.http import Http404
 from quotes.models import Quote
 import math
 
 PAGE_SIZE = 20
 
-def _generate_pagelist(page, page_count, count=20):
+def _generate_pagelist(page, page_count, count=PAGE_SIZE):
     '''
     Generates the numbers for the pages displayed in the gui.
     '''
@@ -29,6 +30,10 @@ def index(request, page=1):
     first_index = (page - 1) * PAGE_SIZE
     quotes = Quote.objects.all().order_by('-created')[first_index:first_index + PAGE_SIZE]
     pagecount = int(math.ceil(len(Quote.objects.all()) / float(PAGE_SIZE)))
+
+    # if page above pagecount, then 404.
+    if page > pagecount:
+        raise Http404
 
     # return render from template
     return render_to_response(
