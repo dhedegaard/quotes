@@ -18,6 +18,22 @@ def _generate_pagelist(page, page_count, count=PAGE_SIZE):
     else:
         return range(page - count / 2 + 1, page + count / 2 + 1)
 
+def search_quotes(search):
+    '''
+    Returns the quotes fitting the search-pattern based on searching
+    according to a postgres searchvector (tsearch2).
+    '''
+    return Quote.objects.select_related().extra(
+        select = {
+            'created': 'created',
+            'quote': 'quote',
+            'rank': 'ts_rank_cd(quote_tsv, plainto_tsquery(%s), 32)',
+            },
+        where = ['quote_tsv @@ plainto_tsquery(%s)'],
+        params = [search],
+        select_params= [search],
+        ).order_by('-rank')
+
 def index(request, page=1):
     '''
     This method is used as a url handler for django.
