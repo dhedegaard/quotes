@@ -1,3 +1,12 @@
+img {
+    border: 0;
+}
+
+#header {
+    text-decoration: none;
+    color: black;
+}
+
 body {
     font-family: sans-serif;
 }

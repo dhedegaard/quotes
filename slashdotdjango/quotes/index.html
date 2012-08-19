@@ -3,16 +3,22 @@
 {% block title %}Slashdot Quotes Database{% endblock %}
 
 {% block content %}
-<h1>Slashdot Quotes Database</h1>
+<h1><a id="header" href="{% url quotes.views.index %}">Slashdot Quotes Database</a></h1>
 <p>This is a simple webinterface for a database containing quotes gathered
 from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
 <hr />
-{% if quotes %}
   <div class="fill">
     <div class="center">
+      <div class="search">
+	<form method="GET" action="{% url quotes.views.index %}">
+	  <input type="text" name="search" value="{{ search }}" />
+	  <input type="submit" value="Search" />
+	</form>
+      </div>
       <span class="paginator">
 	{% include 'quotes/paginator.html' %}
       </span>
+      {% if quotes %}
       <table id="quotes">
 	<tr class="top">
 	  <th>Created</th>
@@ -29,13 +35,13 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
 	  <th>Quote</th>
 	</tr>
       </table>
+      {% else %}
+      <p>No quotes in the database.</p>
+      {% endif %}
       <span class="paginator">
 	{% include 'quotes/paginator.html' %}
       </span>
     </div>
   </div>
-{% else %}
-  <p>No quotes in the database.</p>
-{% endif %}
 <hr />
 {% endblock %}
