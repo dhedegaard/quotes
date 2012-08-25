@@ -1,8 +1,9 @@
 from django.db import models
+from datetime import datetime
 import time
 
 class Quote(models.Model):
-    created = models.DateTimeField(primary_key=True)
+    created = models.DateTimeField(primary_key=True, default=datetime.now())
     quote = models.CharField(max_length=512, unique=True)
 
     def __unicode__(self):

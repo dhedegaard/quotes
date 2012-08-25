@@ -46,7 +46,7 @@ class SlashdotParser(HTMLParser):
 
     def handle_data(self, data):
         if self.in_blockquote and data:
-            self.quote = data.strip()
+            self.quote = data
 
     def handle_endtag(self, tag):
         if self.in_blockquote and tag == 'blockquote':
@@ -108,8 +108,10 @@ def save_quote_in_table(quote, dbname=DBNAME, dbuser=DBUSER):
     except psycopg2.IntegrityError, error:
         conn.rollback()
         # pgcode 23505 is unique key constraint on table column.
-        if error.pgcode != '23505':
+        if error.pgcode == '23505':
             logging.error('psycopg2.IntegrityError pgcode: %s', error.pgcode)
+        else:
+            logging.exception(error)
         return False
     finally:
         cur.close()
