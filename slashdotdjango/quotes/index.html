@@ -3,45 +3,30 @@
 {% block title %}Slashdot Quotes Database{% endblock %}
 
 {% block content %}
-<h1><a id="header" href="{% url quotes.views.index %}">Slashdot Quotes Database</a></h1>
+<h1>Slashdot Quotes Database</h1>
 <p>This is a simple webinterface for a database containing quotes gathered
 from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
+{% if False %}
+<span style="width: 100%; text-align: center; margin-left: auto; margin-right: auto;">Latest - Random</span>
+{% endif %}
 <hr />
-  <div class="fill">
-    <div class="center">
-      <div class="search">
-	<form method="GET" action="{% url quotes.views.index %}">
-	  <input type="text" name="search" value="{{ search }}" placeholder="Search..." />
-	  <input type="submit" value="Search" class="btn btn-primary" style="display: none;"/>
-	</form>
-      </div>
-      <span class="paginator">
-	{% include 'quotes/paginator.html' %}
-      </span>
-      {% if quotes %}
-      <table id="quotes" class="table table-striped table-bordered">
-	<tr class="top">
-	  <th>Created</th>
-	  <th>Quote</th>
-	</tr>
-	{% for quote in quotes %}
-	<tr class="{% cycle 'odd' 'even' %}">
-	  <td class="created">{{ quote.created|date:'H:i d-m-h' }}</td>
-	  <td class="quote"><pre>{{ quote.quote }}</pre></td>
-	</tr>
-	{% endfor %}
-	<tr class="bottom">
-	  <th>Created</th>
-	  <th>Quote</th>
-	</tr>
-      </table>
-      {% else %}
-      <p>No quotes in the database.</p>
-      {% endif %}
-      <span class="paginator">
-	{% include 'quotes/paginator.html' %}
-      </span>
-    </div>
+<div style="width: 100%;">
+  <div style="margin-left: auto; margin-right: auto; text-align: center;">
+    <form method="GET" action="{% url quotes.views.index %}">
+      <input type="text" name="search" value="{{ search }}" placeholder="Search..." />
+      <input type="submit" value="Search" class="btn btn-primary" style="display: none;"/>
+    </form>
   </div>
-<hr />
+</div>
+{% if quotes %}
+{% for quote in quotes %}
+<pre>{{ quote.quote }}</pre>
+{% endfor %}
+<div style="width: 100%; text-align:center;">
+  <a style="margin-left: auto; margin-right: auto;" class="btn" href="{% url quotes.views.index pagenext %}">Older</a>
+</div>
+<br />
+{% else %}
+<p>No quotes in the database.</p>
+{% endif %}
 {% endblock %}
