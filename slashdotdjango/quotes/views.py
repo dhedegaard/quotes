@@ -39,10 +39,23 @@ def _search_quotes(search):
         select_params= [search],
         ).order_by('-rank')
 
+def _get_random_quotes():
+    return Quote.objects.all().extra(
+        order_by='?'
+        )[:PAGE_SIZE]
+
+def random(request):
+    quotes = _get_random_quotes()
+    random = True
+    index = False
+    return render_to_response('quotes/index.html', locals())
+
 def index(request, page=1):
     '''
     This method is used as a url handler for django.
     '''
+    random = False
+    index = True
 
     # handle search parameter, if any
     GET = request.GET
@@ -63,8 +76,10 @@ def index(request, page=1):
     # get data, setup content
     first_index = (page - 1) * PAGE_SIZE
     if search:
+        older = False
         quotes = _search_quotes(search)
     else:
+        older = True
         quotes = Quote.objects.all().order_by('-created')
 
     pagecount = int(math.ceil(quotes.count() / float(PAGE_SIZE))) + 1
