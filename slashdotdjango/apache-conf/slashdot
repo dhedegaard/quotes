@@ -1,0 +1,19 @@
+# Setup WSGI
+WSGIScriptAlias / /home/slashdot/slashdotquotes/slashdotdjango/slashdotdjango/wsgi.py
+WSGIPythonPath /home/slashdot/slashdotquotes/slashdotdjango
+<Directory /home/slashdot/slashdotquotes/slashdotdjango/slashdotdjango>
+  <Files wsgi.py>
+    Order deny,allow
+    Allow from all
+  </Files>
+</Directory>
+
+# Static files
+Alias /static/ /home/slashdot/slashdotquotes/slashdotdjango/quotes/static/
+<Directory /home/slashdot/slashdotquotes/slashdotdjango/quotes/static>
+  Order deny,allow
+  Allow from all
+</Directory>
+
+# robots.txt
+Alias /robots.txt /home/slashdot/slashdotquotes/slashdotdjango/quotes/robots.txt
