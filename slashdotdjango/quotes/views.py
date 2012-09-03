@@ -6,6 +6,7 @@ from quotes.models import Quote
 import math
 
 PAGE_SIZE = 20
+MAX_PAGE_SIZE = 200
 
 def _generate_pagelist(page, pagecount, count=PAGE_SIZE):
     '''
@@ -39,13 +40,13 @@ def _search_quotes(search):
         select_params= [search],
         ).order_by('-rank')
 
-def _get_random_quotes():
+def get_random_quotes():
     return Quote.objects.all().extra(
         order_by='?'
-        )[:PAGE_SIZE]
+        )
 
 def random(request):
-    quotes = _get_random_quotes()
+    quotes = get_random_quotes()[:PAGE_SIZE]
     random = True
     index = False
     return render_to_response('quotes/index.html', locals())
