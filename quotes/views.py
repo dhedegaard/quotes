@@ -49,7 +49,7 @@ def random(request):
     quotes = get_random_quotes()[:PAGE_SIZE]
     random = True
     index = False
-    return render_to_response('quotes/index.html', locals())
+    return render_to_response('index.html', locals())
 
 def index(request, page=1):
     '''
@@ -96,4 +96,4 @@ def index(request, page=1):
     pagelist = _generate_pagelist(page, pagecount)
 
     # return render from template
-    return render_to_response('quotes/index.html', locals())
+    return render_to_response('index.html', locals())

@@ -10,16 +10,16 @@ change this constant to whatever you like.
 
 SLEEP_TIME_SECONDS = 60 * 10
 
-DBNAME = 'slashdot'
-DBUSER = 'slashdot'
-
 import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'slashdotdjango.settings'
+
 import httplib
-import psycopg2
 from HTMLParser import HTMLParser
 import logging
 import logging.handlers
 import time
+
+from quotes.models import Quote
 
 __author__ = 'Dennis Hedegaard'
 __version__ = 0.1
@@ -87,36 +87,21 @@ def parse_slashdot_body(body):
         logging.debug('Unable to parse quote from body, because: %s', error)
         return None
 
-def save_quote_in_table(quote, dbname=DBNAME, dbuser=DBUSER):
+def save_quote_in_table(quote):
     '''
     Saves the quote specified in the database.
 
     Returns True if quote is saved, else False and logs the
     reason why it failed.
     '''
-    conn = psycopg2.connect('dbname=%(dbname)s user=%(dbuser)s' % {
-            'dbname': dbname,
-            'dbuser': dbuser,
-            })
-    cur = conn.cursor()
     try:
-        query = 'INSERT INTO quotes(quote) VALUES(%(quote)s)'
-        cur.execute(query, {
-                'quote': quote,
-                })
-        conn.commit()
-    except psycopg2.IntegrityError, error:
-        conn.rollback()
-        # pgcode 23505 is unique key constraint on table column.
-        if error.pgcode == '23505':
-            logging.error('psycopg2.IntegrityError pgcode: %s', error.pgcode)
-        else:
-            logging.exception(error)
+        newquote = Quote()
+        newquote.quote = quote
+        newquote.save()
+        return True
+    except:
+        raise
         return False
-    finally:
-        cur.close()
-        conn.close()
-    return True
 
 def _setup_logging():
     '''

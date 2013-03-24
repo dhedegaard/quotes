@@ -1,7 +1,8 @@
-from django.http import HttpResponse, HttpResponseBadRequest
-from quotes.models import Quote
-from simplejson import dumps
+import json
 
+from django.http import HttpResponse, HttpResponseBadRequest
+
+from quotes.models import Quote
 from views import MAX_PAGE_SIZE
 from views import get_random_quotes
 
@@ -22,7 +23,7 @@ def _return_json(request, queryset):
     if count > MAX_PAGE_SIZE or count < 1:
         return HttpResponseBadRequest('400 Bad parameter: count is too high (above %d) or too low (below 1): %d' % (MAX_PAGE_SIZE, count))
 
-    return HttpResponse(dumps(list([q.quote for q in queryset])))
+    return HttpResponse(json.dumps(list([q.quote for q in queryset])))
 
 def json_random(request):
     '''

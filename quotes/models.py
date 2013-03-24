@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime
-import time
+
 
 class Quote(models.Model):
     created = models.DateTimeField(primary_key=True, default=datetime.now())
