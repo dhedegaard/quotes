@@ -49,6 +49,8 @@ def random(request):
     quotes = get_random_quotes()[:PAGE_SIZE]
     random = True
     index = False
+    total_quotes = Quote.objects.count()
+
     return render_to_response('index.html', locals())
 
 def index(request, page=1):
