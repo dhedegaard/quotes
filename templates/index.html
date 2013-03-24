@@ -39,7 +39,7 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
   {% for quote in quotes %}
   <div class="quote" style="width: 100%;">
     <div style="float: right; color: #ddd;">
-      First seen: {{ quote.created|date:"Y-m-d h:m:s" }}
+      First seen: {{ quote.created|date:"Y-m-d h:m" }}
     </div>
     <pre>
       {{ quote.quote }}
