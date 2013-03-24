@@ -94,6 +94,7 @@ def index(request, page=1):
     pageprev = page - 1
     pagenext = page + 1
     pagelist = _generate_pagelist(page, pagecount)
+    total_quotes = Quote.objects.count()
 
     # return render from template
     return render_to_response('index.html', locals())

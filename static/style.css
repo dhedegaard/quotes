@@ -1,3 +1,7 @@
 pre.quote {
     margin-bottom: 25px;
 }
+
+.bold {
+    font-weight: bold;
+}

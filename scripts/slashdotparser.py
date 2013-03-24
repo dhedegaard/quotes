@@ -6,13 +6,14 @@ and puts them in a relational database.
 By default the application will attempt to get a quote and then
 sleep for SLEEP_TIME_SECONDS before trying again. Feel free to
 change this constant to whatever you like.
+
+Remember to setup the PYTHONPATH to include the project root.
 '''
 
 SLEEP_TIME_SECONDS = 60 * 10
 
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'slashdotdjango.settings'
-
 import httplib
 from HTMLParser import HTMLParser
 import logging
@@ -100,7 +101,6 @@ def save_quote_in_table(quote):
         newquote.save()
         return True
     except:
-        raise
         return False
 
 def _setup_logging():
