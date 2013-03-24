@@ -1,4 +1,8 @@
-pre.quote {
+pre {
+    padding-top: 25px;
+}
+
+.quote {
     margin-bottom: 25px;
 }
 
