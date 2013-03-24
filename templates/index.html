@@ -9,7 +9,7 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
 <hr />
 <span style="float: right;">
 {% if random %}
-<a href="{% url quotes.views.random %}"
+<a href="{% url 'quotes.views.random' %}"
    class="btn btn-warning">Reload<i class="icon-refresh icon-white"></i></a>
 {% endif %}
 <a 
@@ -36,16 +36,24 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
   <div style="clear: both;" />
   {% if quotes %}
   {% for quote in quotes %}
-  <pre class="quote">{{ quote.quote }}</pre>
+  <div class="quote" style="width: 100%;">
+    <div style="float: right; color: #ddd;">
+      First seen: {{ quote.created|date:"Y-m-d h:m:s" }}
+    </div>
+    <pre>
+      {{ quote.quote }}
+    </pre>
+    <div style="clear: both;"></div>
+  </div>
   {% endfor %}
   {% if random %}
-    <a href="{% url quotes.views.random %}" class="btn btn-reload btn-block">
+    <a href="{% url 'quotes.views.random' %}" class="btn btn-reload btn-block">
       Reload
       <i class="icon-refresh"></i>
     </a>
   {% endif %}
   {% if older %}
-  <a style="margin-left: auto; margin-right: auto;" class="btn btn-block" href="{% url quotes.views.index pagenext %}">Older</a>
+  <a style="margin-left: auto; margin-right: auto;" class="btn btn-block" href="{% url 'quotes.views.index' pagenext %}">Older</a>
   {% endif %}
   <div style="margin-bottom: 20px; width: 100%;" />
   {% else %}

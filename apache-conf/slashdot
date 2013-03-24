@@ -1,7 +1,7 @@
 # Setup WSGI
-WSGIScriptAlias / /home/slashdot/slashdotquotes/slashdotdjango/slashdotdjango/wsgi.py
-WSGIPythonPath /home/slashdot/slashdotquotes/slashdotdjango
-<Directory /home/slashdot/slashdotquotes/slashdotdjango/slashdotdjango>
+WSGIScriptAlias / /home/slashdot/slashdotquotes/slashdotdjango/wsgi.py
+WSGIPythonPath /home/slashdot/slashdotquotes
+<Directory /home/slashdot/slashdotquotes/slashdotdjango>
   <Files wsgi.py>
     Order deny,allow
     Allow from all
@@ -9,11 +9,11 @@ WSGIPythonPath /home/slashdot/slashdotquotes/slashdotdjango
 </Directory>
 
 # Static files
-Alias /static/ /home/slashdot/slashdotquotes/slashdotdjango/quotes/static/
-<Directory /home/slashdot/slashdotquotes/slashdotdjango/quotes/static>
+Alias /static/ /home/slashdot/slashdotquotes/static_gather/
+<Directory /home/slashdot/slashdotquotes/static_gather>
   Order deny,allow
   Allow from all
 </Directory>
 
 # robots.txt
-Alias /robots.txt /home/slashdot/slashdotquotes/slashdotdjango/quotes/robots.txt
+Alias /robots.txt /home/slashdot/slashdotquotes/static_gather/robots.txt
