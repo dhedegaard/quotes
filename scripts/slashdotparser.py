@@ -13,23 +13,26 @@ Remember to setup the PYTHONPATH to include the project root.
 SLEEP_TIME_SECONDS = 60 * 10
 
 import os
+import sys
+
+# Bootstrap environment
 os.environ['DJANGO_SETTINGS_MODULE'] = 'slashdotdjango.settings'
-import httplib
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, ROOT)
+
+from contextlib import closing
 from HTMLParser import HTMLParser
 import logging
 import logging.handlers
 import time
 
+import requests
+
 from quotes.models import Quote
 
-__author__ = 'Dennis Hedegaard'
-__version__ = 0.1
+LOGFILE = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), 'slashdotparser.log'))
 
-try:
-    LOGFILE = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), 'slashdotparser.log'))
-except NameError:
-    LOGFILE = 'slashdotparser.log'
 
 class SlashdotParser(HTMLParser):
     '''
@@ -53,40 +56,36 @@ class SlashdotParser(HTMLParser):
         if self.in_blockquote and tag == 'blockquote':
             self.in_blockquote = False
 
+
 def get_slashdot_body():
     '''
     Returns the body from the slashdot website,
-    if this fails None is returned, else the body.
+    if this fails en exception is thrown.
+
+    :returns: Body of slashdot.org, as a string.
     '''
+
     result = None
-    try:
-        con = httplib.HTTPConnection('slashdot.org')
-        con.connect()
-        con.request('GET', '/')
-        resp = con.getresponse()
-        result = resp.read()
-    except httplib.HTTPException, error:
-        result = None
-        logging.debug('Unable to get slashdot body because: %s',
-                      error)
-    finally:
-        resp.close()
-        con.close()
-    return result
+    with closing(requests.get('http://slashdot.org/')) as r:
+        if r.status_code == 200:
+            return r.text
+        else:
+            logging.debug('Did not recieve a 200 OK')
+            r.raise_for_status()
+
 
 def parse_slashdot_body(body):
     '''
     Parses the html of slashdot.org's website and returns the quote
     contained on the website.
+
+    :param body: Body of slashdot.org, as a string.
+    :returns: The quote on the page, as a string.
     '''
-    parser = SlashdotParser()
-    try:
+    with closing(SlashdotParser()) as parser:
         parser.feed(body)
-        parser.close()
         return parser.quote
-    except HTMLParser.HTMLParseError, error:
-        logging.debug('Unable to parse quote from body, because: %s', error)
-        return None
+
 
 def save_quote_in_table(quote):
     '''
@@ -95,13 +94,8 @@ def save_quote_in_table(quote):
     Returns True if quote is saved, else False and logs the
     reason why it failed.
     '''
-    try:
-        newquote = Quote()
-        newquote.quote = quote
-        newquote.save()
-        return True
-    except:
-        return False
+    newquote, created = Quote.objects.get_or_create(quote=quote)
+
 
 def _setup_logging():
     '''
@@ -132,19 +126,12 @@ def main(sleeptime=SLEEP_TIME_SECONDS):
             try:
                 # get slashdot HTML.
                 body = get_slashdot_body()
-                if body == None:
-                    continue
+
                 # parse quote from the body.
                 quote = parse_slashdot_body(body)
-                if quote == None:
-                    continue
-                logging.debug('\tquote: %s', quote)
+
                 # attempt to save the quote.
-                saved = save_quote_in_table(quote)
-                if saved:
-                    logging.info('\tNew quote saved')
-                else:
-                    logging.info('\tQuote already in the table.')
+                save_quote_in_table(quote)
             except Exception, error:
                 logging.exception(error)
 

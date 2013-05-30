@@ -1,9 +1,14 @@
+import datetime
+
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 
 
 class Quote(models.Model):
-    created = models.DateTimeField(primary_key=True, default=datetime.now())
+    created = models.DateTimeField(
+        primary_key=True,
+        default=timezone.make_aware(datetime.datetime.now(),
+                                    timezone.get_default_timezone()))
     quote = models.CharField(max_length=512, unique=True)
 
     def __unicode__(self):
