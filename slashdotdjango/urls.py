@@ -4,8 +4,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^json/random', 'quotes.json.json_random'),
-    url(r'^json/latest', 'quotes.json.json_latest'),
+    url(r'^rest/random', 'quotes.rest.rest_random'),
+    url(r'^rest/latest', 'quotes.rest.rest_latest'),
     url(r'^random', 'quotes.views.random'),
     url(r'^page/([1-9]\d*)/', 'quotes.views.index'),
     url(r'', 'quotes.views.index'),

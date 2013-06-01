@@ -8,6 +8,7 @@ import math
 PAGE_SIZE = 20
 MAX_PAGE_SIZE = 200
 
+
 def _generate_pagelist(page, pagecount, count=PAGE_SIZE):
     '''
     Generates the numbers for the pages displayed in the gui.
@@ -26,32 +27,25 @@ def _generate_pagelist(page, pagecount, count=PAGE_SIZE):
 
 def _search_quotes(search):
     '''
-    Returns the quotes fitting the search-pattern based on searching
-    according to a postgres searchvector (tsearch2).
+    Searches the quotes, returns objects containing "search".
+
+    :param search: The string to search by, ignoring casing.
+    :returns: Queryset, which may be empty.
     '''
-    return Quote.objects.select_related().extra(
-        select = {
-            'created': 'created',
-            'quote': 'quote',
-            'rank': 'ts_rank_cd(quote_tsv, plainto_tsquery(%s), 32)',
-            },
-        where = ['quote_tsv @@ plainto_tsquery(%s)'],
-        params = [search],
-        select_params= [search],
-        ).order_by('-rank')
+    return Quote.objects.filter(quote__icontains=search)
+
 
 def get_random_quotes():
-    return Quote.objects.all().extra(
-        order_by='?'
-        )
+    return Quote.objects.all().extra(order_by='?')
+
 
 def random(request):
     quotes = get_random_quotes()[:PAGE_SIZE]
     random = True
     index = False
     total_quotes = Quote.objects.count()
-
     return render_to_response('index.html', locals())
+
 
 def index(request, page=1):
     '''

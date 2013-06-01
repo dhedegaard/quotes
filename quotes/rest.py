@@ -11,21 +11,19 @@ def _return_json(request, queryset):
     Parses 'count' from request.GET or uses default.
     Returns data from queryset as json or returns HTTP 400.
     '''
-    count = MAX_PAGE_SIZE
     try:
-        count = request.GET['count']
-        try:
-            count = int(request.GET['count'])
-        except ValueError:
-            return HttpResponseBadRequest('400 Bad parameter: count is not a number: %s' % count)
-    except: pass
+        count = int(request.GET.get('count', 20))
+    except ValueError:
+        return HttpResponseBadRequest('400 Bad parameter: count is not a number: %s' % count)
 
     if count > MAX_PAGE_SIZE or count < 1:
         return HttpResponseBadRequest('400 Bad parameter: count is too high (above %d) or too low (below 1): %d' % (MAX_PAGE_SIZE, count))
 
+    queryset = queryset[:count]
+
     return HttpResponse(json.dumps(list([q.quote for q in queryset])))
 
-def json_random(request):
+def rest_random(request):
     '''
     Returns random quotes in a json array.
     Takes a parameter 'count'.
@@ -33,7 +31,7 @@ def json_random(request):
     quotes = get_random_quotes()
     return _return_json(request, quotes)
 
-def json_latest(request):
+def rest_latest(request):
     '''
     Returns the latest queries in a json array.
     Takes a parameter 'count'.
