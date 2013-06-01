@@ -10,6 +10,11 @@ ADMINS = (
     ('Dennis Hedegaard', 'dennis@dhedegaard.dk'),
 )
 
+ALLOWED_HOSTS = ['sd.dhedegaard.dk', 'sd.neo2k.dk']
+
+# Define to avoid error mails having From: root@localhost
+# SERVER_EMAIL = 'root@localhost'
+
 MANAGERS = ADMINS
 
 DATABASES = {
