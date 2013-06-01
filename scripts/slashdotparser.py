@@ -1,16 +1,10 @@
 #!/usr/bin/env python
 '''
 A simple application that gets the quotes from the slashdot website
-and puts them in a relational database.
+and puts them in the default database defined in the settings module.
 
-By default the application will attempt to get a quote and then
-sleep for SLEEP_TIME_SECONDS before trying again. Feel free to
-change this constant to whatever you like.
-
-Remember to setup the PYTHONPATH to include the project root.
+The idea is to put this script in a crontab or similar.
 '''
-
-SLEEP_TIME_SECONDS = 60 * 10
 
 import os
 import sys
@@ -93,8 +87,11 @@ def save_quote_in_table(quote):
 
     Returns True if quote is saved, else False and logs the
     reason why it failed.
+
+    :returns: True if the quote was saved, if it already existed False.
     '''
     newquote, created = Quote.objects.get_or_create(quote=quote)
+    return created
 
 
 def _setup_logging():
@@ -106,39 +103,33 @@ def _setup_logging():
     logger.addHandler(logging.handlers.TimedRotatingFileHandler(
         LOGFILE, 'midnight', 1, backupCount=7))
     logger.addHandler(logging.StreamHandler())
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.WARN)
+    return logger
 
 
-def main(sleeptime=SLEEP_TIME_SECONDS):
+def main():
     '''
-    This function starts the main loop. Run this to run the application.
-
-    When the method is called, a loop runs forever.
+    Run the script.
     '''
 
-    _setup_logging()
-    logging.warning('starting mainloop.. sleeptime is %.1f seconds', sleeptime)
+    logger = _setup_logging()
 
     try:
-        while True:
-            logging.debug('connecting to slashdot..')
+        # get slashdot HTML.
+        body = get_slashdot_body()
 
-            try:
-                # get slashdot HTML.
-                body = get_slashdot_body()
+        # parse quote from the body.
+        quote = parse_slashdot_body(body)
 
-                # parse quote from the body.
-                quote = parse_slashdot_body(body)
+        # attempt to save the quote.
+        if save_quote_in_table(quote):
+            logger.info('saved new query')
+        else:
+            logger.info('quote already exists')
 
-                # attempt to save the quote.
-                save_quote_in_table(quote)
-            except Exception, error:
-                logging.exception(error)
-
-            logging.debug('sleeping...')
-            time.sleep(sleeptime)
-    except KeyboardInterrupt:
-        logging.warning('Interrupt received, shutting down.')
+    except Exception, e:
+        logger.error(e)
+        raise
 
 if __name__ == '__main__':
     main()
