@@ -5,16 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
     <link href="/static/style.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <title>{% block title %}base template title{% endblock %}</title>
   </head>
   <body>
-    <div style="width: 100%; font-align: center;">
-      <div style="width: 700px; margin-left: auto; margin-right: auto;" >
+    <div class="container">
       {% block content %}
       base template content
       {% endblock %}
-      </div>
     </div>
   </body>
 </html>
