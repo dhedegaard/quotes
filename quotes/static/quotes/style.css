@@ -1,4 +1,9 @@
+body {
+    font-family: 'Ubuntu', sans-serif;
+}
+
 pre {
+    font-family: 'Ubuntu Mono', sans-serif;
     padding-top: 25px;
 }
 

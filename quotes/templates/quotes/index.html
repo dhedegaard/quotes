@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'quotes/base.html' %}
 
 {% block title %}Slashdot Quotes Database{% endblock %}
 
@@ -24,13 +24,12 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
    href="{% url 'quotes.views.index' %}"
    class="btn {% if index and not search %}disabled{% endif %}">Latest<i class="icon-chevron-up"></i></a>
 </span>
-<div style="width: 100%;">
+<div>
   <div>
-    <form name="search-form" method="GET" action="{% url 'quotes.views.index' %}">
+    <form name="search-form" class="form-search" method="GET" action="{% url 'quotes.views.index' %}">
       <div class="input-append">
-	<input type="text" name="search" value="{{ search }}" placeholder="Search..." />
-	<span class="add-on" onclick="document.forms['search-form'].submit();"><i onclick="document.forms['search-form'].submit();" class="icon-search"></i></span>
-	<input type="submit" id="form-search" style="display: none;" />
+	<input type="text" class="search-query input-xlarge" name="search" value="{{ search }}" placeholder="Search..." />
+    <button type="submit" class="btn btn-inverse"><i class="icon-white icon-search"></i></button>
       </div>
     </form>
   </div>
@@ -39,7 +38,7 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
   {% for quote in quotes %}
   <div class="quote" style="width: 100%;">
     <div style="float: right; color: #ddd;">
-      First seen: {{ quote.created|date:"Y-m-d h:m" }}
+      First seen {{ quote.created|timesince }} ago
     </div>
     <pre>
       {{ quote.quote }}

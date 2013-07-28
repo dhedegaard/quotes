@@ -6,6 +6,7 @@ from quotes.models import Quote
 from views import MAX_PAGE_SIZE
 from views import get_random_quotes
 
+
 def _return_json(request, queryset):
     '''
     Parses 'count' from request.GET or uses default.
@@ -23,6 +24,7 @@ def _return_json(request, queryset):
 
     return HttpResponse(json.dumps(list([q.quote for q in queryset])))
 
+
 def rest_random(request):
     '''
     Returns random quotes in a json array.
@@ -30,6 +32,7 @@ def rest_random(request):
     '''
     quotes = get_random_quotes()
     return _return_json(request, quotes)
+
 
 def rest_latest(request):
     '''

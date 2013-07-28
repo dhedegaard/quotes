@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.http import Http404
 from quotes.models import Quote
 import math
@@ -44,7 +44,7 @@ def random(request):
     random = True
     index = False
     total_quotes = Quote.objects.count()
-    return render_to_response('index.html', locals())
+    return render(request, 'quotes/index.html', locals())
 
 
 def index(request, page=1):
@@ -93,4 +93,4 @@ def index(request, page=1):
     total_quotes = Quote.objects.count()
 
     # return render from template
-    return render_to_response('index.html', locals())
+    return render(request, 'quotes/index.html', locals())
