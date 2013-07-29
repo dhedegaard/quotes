@@ -1,9 +1,4 @@
-body {
-    font-family: 'Ubuntu', sans-serif;
-}
-
 pre {
-    font-family: 'Ubuntu Mono', sans-serif;
     padding-left: 20px;
 }
 
@@ -13,4 +8,16 @@ pre {
 
 .bold {
     font-weight: bold;
+}
+
+.last-seen {
+    color: #ddd;
+}
+
+.no-quotes {
+    margin-bottom: 20px; width: 100%;
+}
+
+.nowrap {
+    white-space: nowrap;
 }
