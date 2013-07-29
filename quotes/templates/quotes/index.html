@@ -34,7 +34,7 @@
       <a href="{% url 'quotes.views.random' %}"
          class="btn btn-success">
         <i class="hidden-lg icon-refresh icon-white"></i>
-        <span class="visible-lg"><i class="icon-refresh icon-white"></i>Reload</span>
+        <span class="visible-lg"><i class="icon-refresh icon-white"></i> Reload</span>
       </a>
       {% endif %}
       <a
@@ -43,13 +43,13 @@
          {% endif %}
          class="btn btn-primary nowrap {% if random %}disabled{% endif %}">
         <i class="hidden-lg icon-random icon-white"></i>
-        <span class="visible-lg"><i class="icon-random icon-white"></i>Random</span>
+        <span class="visible-lg"><i class="icon-random icon-white"></i> Random</span>
       </a>
       <a
          href="{% url 'quotes.views.index' %}"
          class="btn btn-danger nowrap {% if index and not search %}disabled{% endif %}">
         <i class="hidden-lg icon-home"></i>
-        <span class="visible-lg"><i class="icon-home"></i>Latest</span>
+        <span class="visible-lg"><i class="icon-home"></i> Latest</span>
       </a>
     </div>
   </div>
