@@ -9,20 +9,22 @@ from the <a href="http://slashdot.org/">Slashdot website</a>.</p>
 <p>This database contains <span class="bold">{{ total_quotes }}</span> quotes.</p>
 <hr />
 <span style="float: right;">
-{% if random %}
-<a href="{% url 'quotes.views.random' %}"
-   class="btn btn-warning">Reload<i class="icon-refresh icon-white"></i></a>
-{% endif %}
-<a 
-   {% if not random %}href="{% url 'quotes.views.random' %}"
-   {% else %}href="javascript:void(0);"
-   {% endif %}
-   class="btn btn-primary {% if random %}disabled{% endif %}">Random
-  <i class="icon-random icon-white"></i>
-</a>
-<a
-   href="{% url 'quotes.views.index' %}"
-   class="btn {% if index and not search %}disabled{% endif %}">Latest<i class="icon-chevron-up"></i></a>
+  <div class="btn-group">
+    {% if random %}
+    <a href="{% url 'quotes.views.random' %}"
+       class="btn btn-success">Reload<i class="icon-refresh icon-white"></i></a>
+    {% endif %}
+    <a
+       {% if not random %}href="{% url 'quotes.views.random' %}"
+       {% else %}href="javascript:void(0);"
+       {% endif %}
+       class="btn btn-primary {% if random %}disabled{% endif %}">Random
+      <i class="icon-random icon-white"></i>
+    </a>
+    <a
+       href="{% url 'quotes.views.index' %}"
+       class="btn {% if index and not search %}disabled{% endif %}">Latest<i class="icon-chevron-up"></i></a>
+  </div>
 </span>
 <div>
   <div>
