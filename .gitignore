@@ -49,3 +49,6 @@ javadoc
 *.suo
 
 slashdotparser.log*
+quotes.log
+static_gather
+.idea
