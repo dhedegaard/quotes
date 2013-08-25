@@ -178,6 +178,7 @@ LOGGING = {
         },
         'quotes.management.commands.getquote': {
             'handlers': ['mail_admins', 'log', 'stdout', ],
+            'level': 'DEBUG',
             'propagate': True,
         }
     }

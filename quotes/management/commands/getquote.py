@@ -9,7 +9,6 @@ from django.core.management import BaseCommand
 from quotes.models import Quote
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 
 class SlashdotParser(HTMLParser):
