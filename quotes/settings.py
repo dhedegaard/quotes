@@ -1,4 +1,4 @@
-# Django settings for slashdotdjango project.
+# Django settings for quotes project.
 
 import os
 PROJECTDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -105,10 +105,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'slashdotdjango.urls'
+ROOT_URLCONF = 'quotes.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'slashdotdjango.wsgi.application'
+WSGI_APPLICATION = 'quotes.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
