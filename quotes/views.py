@@ -1,96 +1,39 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from django.shortcuts import render
-from django.http import Http404
-from quotes.models import Quote
-import math
+from django.contrib import messages
+from django.utils.html import format_html
+
+from .models import Quote
+from .forms import SearchForm
 
 PAGE_SIZE = 20
-MAX_PAGE_SIZE = 200
-
-
-def _generate_pagelist(page, pagecount, count=PAGE_SIZE):
-    '''
-    Generates the numbers for the pages displayed in the gui.
-    '''
-    if pagecount == 0:
-        return []
-    elif page < count / 2:
-        if pagecount > 10:
-            return range(1, 10 + 1)
-        else:
-            return range(1, pagecount)
-    elif page > pagecount - (count / 2):
-        return range(pagecount - count, pagecount + 1)
-    else:
-        return range(page - count / 2 + 1, page + count / 2 + 1)
-
-def _search_quotes(search):
-    '''
-    Searches the quotes, returns objects containing "search".
-
-    :param search: The string to search by, ignoring casing.
-    :returns: Queryset, which may be empty.
-    '''
-    return Quote.objects.filter(quote__icontains=search)
-
-
-def get_random_quotes():
-    return Quote.objects.all().extra(order_by='?')
 
 
 def random(request):
-    quotes = get_random_quotes()[:PAGE_SIZE]
-    random = True
-    index = False
-    total_quotes = Quote.objects.count()
-    return render(request, 'quotes/index.html', locals())
+    return render(request, 'quotes/index.html', {
+        'quotes': Quote.objects.all().extra(order_by='?')[:PAGE_SIZE],
+        'random': True,
+        'total_quotes': Quote.objects.count(),
+    })
 
 
-def index(request, page=1):
+def index(request):
     '''
     This method is used as a url handler for django.
     '''
-    random = False
-    index = True
-
-    # handle search parameter, if any
-    GET = request.GET
-    search = ''
-    if 'search' in GET:
-        search = GET['search'].strip()
-        if len(search) > 0:
-            # trim '+' in beginning and end, since that's just space escaped.
-            if search[0] == '+':
-                search = search[1:]
-            if search[-1] == '+':
-                search = search[:-1]
-    
-    # convert page, if it's not an int (ie str)
-    if not isinstance(page, int):
-        page = int(page)
-
-    # get data, setup content
-    first_index = (page - 1) * PAGE_SIZE
-    if search:
-        older = False
-        quotes = _search_quotes(search)
+    quotes = Quote.objects.all()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data['search']
+            quotes = Quote.objects.filter(quote__icontains=search)
+            if quotes.count() == 0:
+                message = format_html(
+                    'No quotes matching the search <b>{0}</b>.', search)
+                messages.warning(request, message)
     else:
-        older = True
-        quotes = Quote.objects.all().order_by('-created')
+        form = SearchForm()
 
-    pagecount = int(math.ceil(quotes.count() / float(PAGE_SIZE))) + 1
-    quotes = quotes[first_index:first_index + PAGE_SIZE]
-
-    # if page above pagecount, then 404.
-    if page > pagecount and pagecount > 0:
-        raise Http404
-
-    # setup the rest of the variables
-    pageprev = page - 1
-    pagenext = page + 1
-    pagelist = _generate_pagelist(page, pagecount)
-    total_quotes = Quote.objects.count()
-
-    # return render from template
-    return render(request, 'quotes/index.html', locals())
+    return render(request, 'quotes/index.html', {
+        'quotes': quotes[:PAGE_SIZE],
+        'total_quotes': Quote.objects.count(),
+    })

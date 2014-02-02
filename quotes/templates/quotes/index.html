@@ -3,86 +3,58 @@
 {% block title %}Slashdot Quotes{% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-12">
-      <h2>Slashdot Quotes</h2>
-    </div>
-    <div class="col-12 visible-lg">
-      <p>
-          This is a simple webinterface for a database containing quotes gathered
-          from the <a href="http://slashdot.org/">Slashdot website</a>.
-      </p>
-      <p>This database contains <span class="bold">{{ total_quotes }}</span> quotes.</p>
-    </div>
-  </div>
-<div class="row">
-  <div class="col-sm-7 col-md-3">
-    <form name="search-form" class="form-search" method="GET" action="{% url 'quotes.views.index' %}">
-      <div class="input-group">
-	    <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Search..." />
-        <span class="input-group-btn">
-          <button type="submit" class="btn btn-default">
-              <i class="icon-white icon-search"></i>
-          </button>
-        </span>
+<nav class="navbar nav navbar-inverse" role="navigation">
+  <div class="container">
+    <div class="navbar-brand hidden-xs hidden-sm">Slashdot Quotes</div>
+    <ul class="nav navbar-nav">
+      <li{% if not random %} class="active"{% endif %}>
+        <a href="{% url 'index' %}">
+          <i class="glyphicon glyphicon-star"></i>
+          <span>Latest</span>
+        </a>
+      </li>
+      <li{% if random %} class="active"{% endif %}>
+        <a href="{% url 'random' %}">
+          <i class="glyphicon glyphicon-random"></i>
+          <span>Random</span>
+        </a>
+      </li>
+    </ul>
+    <form class="navbar-form navbar-input-group collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}" method="POST" action="{% url 'index' %}" role="search">
+      {% csrf_token %}
+      {% if form.errors %}
+      <p class="navbar-text">{{ form.search.errors }}</p>
+      {% endif %}
+      <div class="form-group">
+        <input type="text" name="search" class="form-control"
+               placeholder="Search"
+               value="{{ form.search.value|default:'' }}" />
       </div>
+      <button type="submit" class="btn btn-default">
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
     </form>
   </div>
-  <div class="col-sm-5 col-md-9 text-right">
-    <div class="btn-group">
-      {% if random %}
-      <a href="{% url 'quotes.views.random' %}"
-         class="btn btn-success">
-        <i class="hidden-lg icon-refresh icon-white"></i>
-        <span class="visible-lg"><i class="icon-refresh icon-white"></i> Reload</span>
-      </a>
-      {% endif %}
-      <a
-         {% if not random %}href="{% url 'quotes.views.random' %}"
-         {% else %}href="javascript:void(0);"
-         {% endif %}
-         class="btn btn-primary nowrap {% if random %}disabled{% endif %}">
-        <i class="hidden-lg icon-random icon-white"></i>
-        <span class="visible-lg"><i class="icon-random icon-white"></i> Random</span>
-      </a>
-      <a
-         href="{% url 'quotes.views.index' %}"
-         class="btn btn-danger nowrap {% if index and not search %}disabled{% endif %}">
-        <i class="hidden-lg icon-home"></i>
-        <span class="visible-lg"><i class="icon-home"></i> Latest</span>
-      </a>
-    </div>
-  </div>
-  <div class="clearfix" />
-</div>
+</nav>
+<div class="container">
 <div class="col-md-12">
-  <hr />
-  {% if quotes %}
+  {% for message in messages %}
+  <div class="alert {% if message.level > 25 %}alert-danger{% else %}alert-success{% endif %}">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% if total_quotes %}
     {% for quote in quotes %}
       <div class="quote">
-        <div class="last-seen pull-right visible-lg">
-          First seen {{ quote.created|timesince }} ago
-        </div>
-        <pre>{{ quote.quote }}</pre>
+        <pre class="quote"
+             data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">{{ quote.quote }}</pre>
       </div>
     {% endfor %}
-    {% if random %}
-      <a href="{% url 'quotes.views.random' %}" class="btn btn-primary btn-reload btn-block">
-        Reload
-        <i class="icon-refresh"></i>
-      </a>
-    {% endif %}
-    {% if older %}
-      <a style="margin-left: auto; margin-right: auto;"
-         class="btn btn-primary btn-block"
-         href="{% url 'quotes.views.index' pagenext %}">
-        Older
-      </a>
-    {% endif %}
   {% else %}
-  <div class="no-quotes">
+  <div class="alert alert-warning">
     <p>No quotes in the database.</p>
   </div>
   {% endif %}
+</div>
 </div>
 {% endblock %}

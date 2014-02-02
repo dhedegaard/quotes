@@ -3,8 +3,8 @@ from django.db import models
 
 class Quote(models.Model):
     id = models.AutoField(primary_key=True)
-    created = models.DateTimeField(null=False, auto_now_add=True,
-                                   db_index=True)
+    created = models.DateTimeField(
+        null=False, auto_now_add=True, db_index=True)
     quote = models.TextField(max_length=512, db_index=True)
 
     def __unicode__(self):

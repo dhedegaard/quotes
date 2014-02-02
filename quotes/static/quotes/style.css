@@ -21,3 +21,25 @@ pre {
 .nowrap {
     white-space: nowrap;
 }
+
+.navbar-input-group {
+  font-size: 0; /*removes whitespace between button and input*/
+}
+
+.navbar-input-group input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.navbar-input-group .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 0;
+}
+
+@media (max-width: 768px) {
+
+ul.navbar-nav, ul.navbar-nav li {
+  display:inline
+}
+
+}

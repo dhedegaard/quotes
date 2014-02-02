@@ -47,8 +47,9 @@ Release
 java.policy.applet
 javadoc
 *.suo
+.ropeproject
+.vagrant
 
-slashdotparser.log*
-quotes.log
+*.log
 static_gather
-.idea
+virtenv
