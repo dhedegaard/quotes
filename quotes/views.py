@@ -39,6 +39,10 @@ def index(request, page=1):
         quotes = paginator.page(page)
     except EmptyPage:
         quotes = paginator.page(paginator.num_pages)
+        message = format_html(
+            'The maximum pagenumber is <b>{0}</b>, using that instead!',
+            paginator.num_pages)
+        messages.success(request, message)
 
     return render(request, 'quotes/index.html', {
         'quotes': quotes,
