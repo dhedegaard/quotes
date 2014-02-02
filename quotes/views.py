@@ -38,7 +38,7 @@ def index(request, page=1):
     try:
         quotes = paginator.page(page)
     except EmptyPage:
-        quotes = paginator.page(paginator.page_range[-1])
+        quotes = paginator.page(paginator.num_pages)
 
     return render(request, 'quotes/index.html', {
         'quotes': quotes,
