@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils.html import format_html
 
@@ -38,11 +38,11 @@ def index(request, page=1):
     try:
         quotes = paginator.page(page)
     except EmptyPage:
-        quotes = paginator.page(paginator.num_pages)
         message = format_html(
             'The maximum pagenumber is <b>{0}</b>, using that instead!',
             paginator.num_pages)
         messages.success(request, message)
+        return redirect('index_page', paginator.num_pages)
 
     return render(request, 'quotes/index.html', {
         'quotes': quotes,
