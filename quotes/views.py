@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render
 from django.contrib import messages
 from django.utils.html import format_html
@@ -16,7 +17,7 @@ def random(request):
     })
 
 
-def index(request):
+def index(request, page=1):
     '''
     This method is used as a url handler for django.
     '''
@@ -33,7 +34,13 @@ def index(request):
     else:
         form = SearchForm()
 
+    paginator = Paginator(quotes, PAGE_SIZE)
+    try:
+        quotes = paginator.page(page)
+    except EmptyPage:
+        quotes = paginator.page(paginator.page_range[-1])
+
     return render(request, 'quotes/index.html', {
-        'quotes': quotes[:PAGE_SIZE],
+        'quotes': quotes,
         'total_quotes': Quote.objects.count(),
     })
