@@ -1,5 +1,7 @@
 {% extends 'quotes/base.html' %}
 
+{% load spacify %}
+
 {% block title %}Slashdot Quotes{% endblock %}
 
 {% block content %}
@@ -45,9 +47,9 @@
   {% endfor %}
   {% if total_quotes %}
     {% for quote in quotes %}
-      <div class="quote">
-        <pre class="quote"
-             data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">{{ quote.quote }}</pre>
+      <div class="quote"
+           data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">
+        {{ quote.quote|spacify|linebreaksbr }}
       </div>
     {% endfor %}
     {% if not random %}
