@@ -47,7 +47,7 @@
   {% endfor %}
   {% if total_quotes %}
     {% for quote in quotes %}
-      <div class="quote"
+      <div class="well"
            data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">
         {{ quote.quote|spacify|linebreaksbr }}
       </div>
