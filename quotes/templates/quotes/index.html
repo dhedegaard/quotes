@@ -52,7 +52,14 @@
         {{ quote.quote|spacify|linebreaksbr }}
       </div>
     {% endfor %}
-    {% if not random %}
+    {% if random %}
+    <div class="row center bottom-row">
+      <a href="{% url 'random' %}" class="btn btn-success">
+        <i class="glyphicon glyphicon-refresh"></i>
+        Reload
+      </a>
+    </div>
+    {% else %}
     <div class="row center hidden-xs">
       <ul class="pagination">
         <li{% if not quotes.has_previous %} class="disabled"{% endif %}>
@@ -81,6 +88,7 @@
         <li class="previous{% if not quotes.has_previous %} disabled{% endif %}">
           <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&larr; Prev</a>
         </li>
+        <li>Page <b>{{ quotes.number }}</b> of <b>{{ quotes.paginator.num_pages }}</b></li>
         <li class="next{% if not quotes.has_next %} disabled{% endif %}">
           <a{% if quotes.has_next %} href="{% url 'index_page' quotes.next_page_number %}"{% endif %}>Next &rarr;</a>
         </li>

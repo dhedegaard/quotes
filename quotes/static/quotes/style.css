@@ -39,3 +39,7 @@ ul.navbar-nav, ul.navbar-nav li {
 .center {
   text-align: center;
 }
+
+.bottom-row {
+  margin-bottom: 10px;
+}
