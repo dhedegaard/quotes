@@ -9,7 +9,7 @@ from .forms import RestForm
 
 def _return_json(request, queryset):
     # Set the default count value, if the argument is missing.
-    if not 'count' in request.GET:
+    if 'count' not in request.GET:
         get_params = request.GET.dict()
         get_params['count'] = '20'
         request.GET = get_params

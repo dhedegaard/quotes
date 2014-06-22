@@ -1,10 +1,6 @@
-from django.core.paginator import Paginator, EmptyPage
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.utils.html import format_html
+from django.shortcuts import render
 
 from .models import Quote
-from .forms import SearchForm
 from .filters import QuoteFilter
 
 

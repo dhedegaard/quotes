@@ -21,8 +21,9 @@ class ModelsTests(TestCase):
     def test_quote_unicode(self):
         quote = Quote.objects.create(quote='testquote2')
 
-        self.assertEqual(str(quote), '[%s, %s, testquote2]' % (
-                             quote.id, quote.created))
+        self.assertEqual(
+            str(quote), '[%s, %s, testquote2]' % (
+                quote.id, quote.created))
 
 
 class UrlsTests(TestCase):
@@ -125,8 +126,12 @@ class GetQuoteCommandTests(TestCase):
         class FakeRequest(object):
             status_code = 200
             text = '<blockquote><p>test quote123</p></blockquote>'
-            def close(self): pass
-            def raise_for_status(self): pass
+
+            def close(self):
+                pass
+
+            def raise_for_status(self):
+                pass
         return FakeRequest()
 
     @mock.patch('requests.get', fake_request)
