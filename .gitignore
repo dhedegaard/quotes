@@ -53,3 +53,4 @@ javadoc
 *.log
 static_gather
 virtenv
+venv
