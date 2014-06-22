@@ -1,5 +1,7 @@
 {% load static %}
 {% load spacify %}
+{% load slice_pages %}
+{% load endless %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,30 +30,32 @@
             </a>
           </li>
         </ul>
-        <form class="navbar-form navbar-input-group collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}" method="POST" action="{% url 'index' %}" role="search">
-          {% csrf_token %}
-          {% if form.errors %}
-          <p class="navbar-text">{{ form.search.errors }}</p>
+        <form class="navbar-form collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}"
+              method="GET" role="search" action="{% url 'index' %}">
+          {% if quotes.form.errors %}
+          <p class="navbar-text">{{ quotes.form.search.errors }}</p>
           {% endif %}
-          <div class="form-group">
-            <input type="text" name="search" class="form-control"
-                   placeholder="Search"
-                   value="{{ form.search.value|default:'' }}" />
+          <div class="navbar-input-group">
+            <div class="form-group">
+              <input type="text" name="{{ quotes.form.quote.html_name }}" class="form-control"
+                     placeholder="Search" value="{{ quotes.form.quote.value|default:'' }}" />
+            </div>
+            <button type="submit" class="btn btn-default">
+              <i class="glyphicon glyphicon-search"></i>
+            </button>
           </div>
-          <button type="submit" class="btn btn-default">
-            <i class="glyphicon glyphicon-search"></i>
-          </button>
         </form>
       </div>
     </nav>
     <div class="container">
-    <div class="col-md-12">
       {% for message in messages %}
       <div class="alert {% if message.level > 25 %}alert-danger{% else %}alert-success{% endif %}">
         {{ message }}
       </div>
       {% endfor %}
-      {% if total_quotes %}
+      {% if quotes %}
+        {% paginate 20 quotes %}
+        {% get_pages %}
         {% for quote in quotes %}
           <div class="well"
                data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">
@@ -66,47 +70,66 @@
           </a>
         </div>
         {% else %}
+        {% if pages.paginated %}
         <div class="row center hidden-xs">
           <ul class="pagination">
-            <li{% if not quotes.has_previous %} class="disabled"{% endif %}>
-              <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&laquo;</a>
+            <li{% if not pages.previous %} class="disabled"{% endif %}>
+              {% if pages.previous %}
+              {{ pages.previous }}
+              {% else %}
+              <a rel="page" class="endless_page_link">&lt;</a>
+              {% endif %}
             </li>
-            {% if quotes.number|add:'-8' > 1 %}
-              <li class="disabled"><a>...</a></li>
-            {% endif %}
-            {% for page in quotes.paginator.page_range %}
-              {% if page > quotes.number|add:'-8' and page < quotes.number|add:'8' %}
-                <li {% if quotes.number == page %}class="active"{% endif %}>
-                  <a href="{% url 'index_page' page %}">{{ page }}</a>
-                </li>
+            {% for page in pages|slice_pages %}
+              {% if forloop.first and not pages.first.number == page.number %}
+              <li><a>...</a></li>
+              {% endif %}
+              <li>
+                {{ page }}
+              </li>
+              {% if forloop.last and not pages.last.number == page.number %}
+              <li><a>...</a></li>
               {% endif %}
             {% endfor %}
-            {% if quotes.number|add:'8' < quotes.paginator.num_pages %}
-              <li class="disabled"><a>...</a></li>
-            {% endif %}
-            <li{% if not quotes.has_next %} class="disabled"{% endif %}>
-              <a{% if quotes.has_next %} href ="{% url 'index_page' quotes.next_page_number %}"{% endif %}>&raquo;</a>
+            <li{% if not pages.next %} class="disabled"{% endif %}>
+              {% if pages.next %}
+              {{ pages.next }}
+              {% else %}
+              <a rel="page" class="endless_page_link">&gt;</a>
+              {% endif %}
             </li>
           </ul>
         </div>
         <div class="row center visible-xs">
           <ul class="pager">
-            <li class="previous{% if not quotes.has_previous %} disabled{% endif %}">
-              <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&larr; Prev</a>
+            <li class="previous{% if not pages.previous %} disabled{% endif %}">
+              {% if pages.previous %}
+              {{ pages.previous }}
+              {% else %}
+              <a rel="page" class="endless_page_link">&lt;</a>
+              {% endif %}
             </li>
-            <li>Page <b>{{ quotes.number }}</b> of <b>{{ quotes.paginator.num_pages }}</b></li>
-            <li class="next{% if not quotes.has_next %} disabled{% endif %}">
-              <a{% if quotes.has_next %} href="{% url 'index_page' quotes.next_page_number %}"{% endif %}>Next &rarr;</a>
+            <li>Page <b>{{ pages.current }}</b> of <b>{{ pages|length }}</b></li>
+            <li class="next{% if not pages.next %} disabled{% endif %}">
+              {% if pages.next %}
+              {{ pages.next }}
+              {% else %}
+              <a rel="page" class="endless_page_link">&gt;</a>
+              {% endif %}
             </li>
           </ul>
         </div>
         {% endif %}
+      {% endif %}
       {% else %}
       <div class="alert alert-warning">
-        <p>No quotes in the database.</p>
+        {% if quotes.form.quote.value %}
+        <p>No quotes on the given search string found.</p>
+        {% else %}
+        <p>No quotes found.</p>
+        {% endif %}
       </div>
       {% endif %}
-    </div>
     </div>
   </body>
 </html>

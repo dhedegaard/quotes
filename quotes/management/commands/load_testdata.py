@@ -30,7 +30,7 @@ class Command(BaseCommand):
                             u'call with \'-f\' to clear existing data.')
 
         now = datetime.datetime.now()
-        for i in xrange(100):
+        for i in xrange(500):
             created = now - datetime.timedelta(i)
             Quote.objects.create(
                 id=i,
