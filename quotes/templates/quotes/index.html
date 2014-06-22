@@ -1,105 +1,112 @@
-{% extends 'quotes/base.html' %}
-
+{% load static %}
 {% load spacify %}
-
-{% block title %}Slashdot Quotes{% endblock %}
-
-{% block content %}
-<nav class="navbar nav navbar-inverse navbar-static-top" role="navigation">
-  <div class="container">
-    <div class="navbar-brand hidden-xs hidden-sm">Slashdot Quotes</div>
-    <ul class="nav navbar-nav">
-      <li{% if not random %} class="active"{% endif %}>
-        <a href="{% url 'index' %}">
-          <i class="glyphicon glyphicon-star"></i>
-          <span>Latest</span>
-        </a>
-      </li>
-      <li{% if random %} class="active"{% endif %}>
-        <a href="{% url 'random' %}">
-          <i class="glyphicon glyphicon-random"></i>
-          <span>Random</span>
-        </a>
-      </li>
-    </ul>
-    <form class="navbar-form navbar-input-group collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}" method="POST" action="{% url 'index' %}" role="search">
-      {% csrf_token %}
-      {% if form.errors %}
-      <p class="navbar-text">{{ form.search.errors }}</p>
-      {% endif %}
-      <div class="form-group">
-        <input type="text" name="search" class="form-control"
-               placeholder="Search"
-               value="{{ form.search.value|default:'' }}" />
-      </div>
-      <button type="submit" class="btn btn-default">
-        <i class="glyphicon glyphicon-search"></i>
-      </button>
-    </form>
-  </div>
-</nav>
-<div class="container">
-<div class="col-md-12">
-  {% for message in messages %}
-  <div class="alert {% if message.level > 25 %}alert-danger{% else %}alert-success{% endif %}">
-    {{ message }}
-  </div>
-  {% endfor %}
-  {% if total_quotes %}
-    {% for quote in quotes %}
-      <div class="well"
-           data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">
-        {{ quote.quote|spacify|linebreaksbr }}
-      </div>
-    {% endfor %}
-    {% if random %}
-    <div class="row center bottom-row">
-      <a href="{% url 'random' %}" class="btn btn-success">
-        <i class="glyphicon glyphicon-refresh"></i>
-        Reload
-      </a>
-    </div>
-    {% else %}
-    <div class="row center hidden-xs">
-      <ul class="pagination">
-        <li{% if not quotes.has_previous %} class="disabled"{% endif %}>
-          <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&laquo;</a>
-        </li>
-        {% if quotes.number|add:'-8' > 1 %}
-          <li class="disabled"><a>...</a></li>
-        {% endif %}
-        {% for page in quotes.paginator.page_range %}
-          {% if page > quotes.number|add:'-8' and page < quotes.number|add:'8' %}
-            <li {% if quotes.number == page %}class="active"{% endif %}>
-              <a href="{% url 'index_page' page %}">{{ page }}</a>
-            </li>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="{% static 'quotes/style.css' %}" rel="stylesheet" type="text/css" />
+    <title>Slashdot Quotes</title>
+  </head>
+  <body>
+    <nav class="navbar nav navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-brand hidden-xs hidden-sm">Slashdot Quotes</div>
+        <ul class="nav navbar-nav">
+          <li{% if not random %} class="active"{% endif %}>
+            <a href="{% url 'index' %}">
+              <i class="glyphicon glyphicon-star"></i>
+              <span>Latest</span>
+            </a>
+          </li>
+          <li{% if random %} class="active"{% endif %}>
+            <a href="{% url 'random' %}">
+              <i class="glyphicon glyphicon-random"></i>
+              <span>Random</span>
+            </a>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-input-group collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}" method="POST" action="{% url 'index' %}" role="search">
+          {% csrf_token %}
+          {% if form.errors %}
+          <p class="navbar-text">{{ form.search.errors }}</p>
           {% endif %}
+          <div class="form-group">
+            <input type="text" name="search" class="form-control"
+                   placeholder="Search"
+                   value="{{ form.search.value|default:'' }}" />
+          </div>
+          <button type="submit" class="btn btn-default">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </form>
+      </div>
+    </nav>
+    <div class="container">
+    <div class="col-md-12">
+      {% for message in messages %}
+      <div class="alert {% if message.level > 25 %}alert-danger{% else %}alert-success{% endif %}">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% if total_quotes %}
+        {% for quote in quotes %}
+          <div class="well"
+               data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">
+            {{ quote.quote|spacify|linebreaksbr }}
+          </div>
         {% endfor %}
-        {% if quotes.number|add:'8' < quotes.paginator.num_pages %}
-          <li class="disabled"><a>...</a></li>
+        {% if random %}
+        <div class="row center bottom-row">
+          <a href="{% url 'random' %}" class="btn btn-success">
+            <i class="glyphicon glyphicon-refresh"></i>
+            Reload
+          </a>
+        </div>
+        {% else %}
+        <div class="row center hidden-xs">
+          <ul class="pagination">
+            <li{% if not quotes.has_previous %} class="disabled"{% endif %}>
+              <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&laquo;</a>
+            </li>
+            {% if quotes.number|add:'-8' > 1 %}
+              <li class="disabled"><a>...</a></li>
+            {% endif %}
+            {% for page in quotes.paginator.page_range %}
+              {% if page > quotes.number|add:'-8' and page < quotes.number|add:'8' %}
+                <li {% if quotes.number == page %}class="active"{% endif %}>
+                  <a href="{% url 'index_page' page %}">{{ page }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if quotes.number|add:'8' < quotes.paginator.num_pages %}
+              <li class="disabled"><a>...</a></li>
+            {% endif %}
+            <li{% if not quotes.has_next %} class="disabled"{% endif %}>
+              <a{% if quotes.has_next %} href ="{% url 'index_page' quotes.next_page_number %}"{% endif %}>&raquo;</a>
+            </li>
+          </ul>
+        </div>
+        <div class="row center visible-xs">
+          <ul class="pager">
+            <li class="previous{% if not quotes.has_previous %} disabled{% endif %}">
+              <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&larr; Prev</a>
+            </li>
+            <li>Page <b>{{ quotes.number }}</b> of <b>{{ quotes.paginator.num_pages }}</b></li>
+            <li class="next{% if not quotes.has_next %} disabled{% endif %}">
+              <a{% if quotes.has_next %} href="{% url 'index_page' quotes.next_page_number %}"{% endif %}>Next &rarr;</a>
+            </li>
+          </ul>
+        </div>
         {% endif %}
-        <li{% if not quotes.has_next %} class="disabled"{% endif %}>
-          <a{% if quotes.has_next %} href ="{% url 'index_page' quotes.next_page_number %}"{% endif %}>&raquo;</a>
-        </li>
-      </ul>
+      {% else %}
+      <div class="alert alert-warning">
+        <p>No quotes in the database.</p>
+      </div>
+      {% endif %}
     </div>
-    <div class="row center visible-xs">
-      <ul class="pager">
-        <li class="previous{% if not quotes.has_previous %} disabled{% endif %}">
-          <a{% if quotes.has_previous %} href="{% url 'index_page' quotes.previous_page_number %}"{% endif %}>&larr; Prev</a>
-        </li>
-        <li>Page <b>{{ quotes.number }}</b> of <b>{{ quotes.paginator.num_pages }}</b></li>
-        <li class="next{% if not quotes.has_next %} disabled{% endif %}">
-          <a{% if quotes.has_next %} href="{% url 'index_page' quotes.next_page_number %}"{% endif %}>Next &rarr;</a>
-        </li>
-      </ul>
     </div>
-    {% endif %}
-  {% else %}
-  <div class="alert alert-warning">
-    <p>No quotes in the database.</p>
-  </div>
-  {% endif %}
-</div>
-</div>
-{% endblock %}
+  </body>
+</html>
