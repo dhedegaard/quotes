@@ -30,19 +30,19 @@
             </a>
           </li>
         </ul>
-        <form class="navbar-form collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}"
+        <form class="search-form navbar-form collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}"
               method="GET" role="search" action="{% url 'index' %}">
           {% if quotes.form.errors %}
           <p class="navbar-text">{{ quotes.form.search.errors }}</p>
           {% endif %}
-          <div class="navbar-input-group">
-            <div class="form-group">
+          <div class="form-group">
+            <div class="navbar-input-group">
               <input type="text" name="{{ quotes.form.quote.html_name }}" class="form-control"
                      placeholder="Search" value="{{ quotes.form.quote.value|default:'' }}" />
+              <button type="submit" class="btn btn-default">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
             </div>
-            <button type="submit" class="btn btn-default">
-              <i class="glyphicon glyphicon-search"></i>
-            </button>
           </div>
         </form>
       </div>

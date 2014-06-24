@@ -43,3 +43,7 @@ ul.navbar-nav, ul.navbar-nav li {
 .bottom-row {
   margin-bottom: 10px;
 }
+
+form.search-form {
+  padding-right: 15px !important;
+}
