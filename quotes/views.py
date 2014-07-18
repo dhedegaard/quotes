@@ -9,6 +9,7 @@ def random(request):
         'quotes': QuoteFilter(
             queryset=Quote.objects.all().extra(order_by='?')),
         'random': True,
+        'quotecount': Quote.objects.count(),
     })
 
 
@@ -20,4 +21,5 @@ def index(request, page=1):
 
     return render(request, 'quotes/index.html', {
         'quotes': quotes,
+        'quotecount': Quote.objects.count(),
     })

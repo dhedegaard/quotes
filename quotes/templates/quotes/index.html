@@ -7,8 +7,10 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="A database of Slashdot quotes" />
+    <meta name="keywords" content="slashdot,quotes,slashdot quotes" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link href="{% static 'quotes/style.css' %}" rel="stylesheet" type="text/css" />
     <title>Slashdot Quotes</title>
   </head>
@@ -30,21 +32,24 @@
             </a>
           </li>
         </ul>
-        <form class="search-form navbar-form collapse navbar-collapse navbar-right{% if form.errors %} has-error{% endif %}"
-              method="GET" role="search" action="{% url 'index' %}">
-          {% if quotes.form.errors %}
-          <p class="navbar-text">{{ quotes.form.search.errors }}</p>
-          {% endif %}
-          <div class="form-group">
-            <div class="navbar-input-group">
-              <input type="text" name="{{ quotes.form.quote.html_name }}" class="form-control"
-                     placeholder="Search" value="{{ quotes.form.quote.value|default:'' }}" />
-              <button type="submit" class="btn btn-default">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
+        <div class="navbar-right collapse navbar-collapse">
+          <p class="navbar-text">Currently contains <b>{{ quotecount }}</b> quotes.</p>
+          <form class="search-form navbar-form navbar-right{% if form.errors %} has-error{% endif %}"
+                method="GET" role="search" action="{% url 'index' %}">
+            {% if quotes.form.errors %}
+            <p class="navbar-text">{{ quotes.form.search.errors }}</p>
+            {% endif %}
+            <div class="form-group">
+              <div class="navbar-input-group">
+                <input type="text" name="{{ quotes.form.quote.html_name }}" class="form-control"
+                       placeholder="Search" value="{{ quotes.form.quote.value|default:'' }}" />
+                <button type="submit" class="btn btn-default">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </nav>
     <div class="container">
