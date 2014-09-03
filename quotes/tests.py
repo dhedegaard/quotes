@@ -56,18 +56,19 @@ class ViewTests(TestCase):
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'quotes/base.html')
         self.assertTemplateUsed(response, 'quotes/index.html')
 
     def test_above_max_page(self):
         response = self.client.get('/page/9999999999/')
 
-        self.assertRedirects(response, '/page/1/', 302, 200)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'quotes/index.html')
 
     def test_page_zero(self):
         response = self.client.get('/page/0/')
 
-        self.assertRedirects(response, '/page/1/', 302, 200)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'quotes/index.html')
 
     def test_search(self):
         response = self.client.post('/', {'search': 'test'})
