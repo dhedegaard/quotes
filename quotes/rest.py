@@ -1,6 +1,4 @@
-import json
-
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.utils.html import format_html
 
 from .models import Quote
@@ -25,7 +23,7 @@ def _return_json(request, queryset):
 
     queryset = queryset[:form.cleaned_data['count']]
 
-    return HttpResponse(json.dumps(list([q.quote for q in queryset])))
+    return JsonResponse(list([q.quote for q in queryset]), safe=False)
 
 
 def rest_random(request):

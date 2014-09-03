@@ -11,6 +11,7 @@ from models import Quote
 
 
 class ModelsTests(TestCase):
+
     def test_quote_create(self):
         quote = Quote.objects.create(quote='testquote')
 
@@ -27,6 +28,7 @@ class ModelsTests(TestCase):
 
 
 class UrlsTests(TestCase):
+
     def test_index(self):
         index_page = resolve('/')
         self.assertEqual(index_page.func, views.index)
@@ -49,6 +51,7 @@ class UrlsTests(TestCase):
 
 
 class ViewTests(TestCase):
+
     def test_index(self):
         response = self.client.get('/')
 
@@ -80,6 +83,7 @@ class ViewTests(TestCase):
 
 
 class RestViewTests(TestCase):
+
     def setUp(self):
         self.quote = Quote.objects.create(quote='test123')
 
@@ -111,6 +115,7 @@ class RestViewTests(TestCase):
 
 
 class TemplateTagsTests(TestCase):
+
     def test_spacify(self):
         self.assertEqual(spacify('hej dav'), 'hej dav')
 
@@ -122,6 +127,7 @@ class TemplateTagsTests(TestCase):
 
 
 class GetQuoteCommandTests(TestCase):
+
     def fake_request(url, timeout=None):
         class FakeRequest(object):
             status_code = 200
