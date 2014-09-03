@@ -1,8 +1,8 @@
-psycopg2==2.5.2
-Django==1.6.6
+psycopg2==2.5.4
+Django==1.7
 beautifulsoup4==4.3.2
 mock==1.0.1
 pytz==2014.4
-requests==2.3.0
+requests==2.4.0
 django-endless-pagination==2.0
 django-filter==0.7
