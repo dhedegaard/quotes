@@ -1,5 +1,5 @@
 # Django settings for quotes project.
-
+from __future__ import absolute_import
 import os
 PROJECTDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -174,10 +174,11 @@ LOGGING = {
         },
         'log': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'quotes.logging.AllWriteTimedRotatingFileHandler',
             'formatter': 'verbose',
             'backupCount': 7,
-            'filename': '%s/quotes.log' % PROJECTDIR,
+            'when': 'midnight',
+            'filename': os.path.join(PROJECTDIR, 'quotes.log'),
         },
         'stdout': {
             'level': 'DEBUG',
