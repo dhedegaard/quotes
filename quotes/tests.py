@@ -10,7 +10,6 @@ from django.core.management import call_command
 
 from . import views, rest
 from .templatetags.spacify import spacify
-from .templatetags.slice_pages import slice_pages
 from .models import Quote
 
 

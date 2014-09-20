@@ -13,7 +13,7 @@ def random(request):
     })
 
 
-def index(request, page=1):
+def index(request):
     '''
     This method is used as a url handler for django.
     '''

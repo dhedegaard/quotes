@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3f4c2815-f401-479c-b295-8636451e5ec7}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <InterpreterId>{2c932e09-10a0-45b4-abaa-49e9044cbda0}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
+    <PythonDebugWebServerCommand>
+    </PythonDebugWebServerCommand>
+    <PythonRunWebServerCommand>
+    </PythonRunWebServerCommand>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="quotes\static\quotes\robots.txt" />
+    <Content Include="quotes\static\quotes\style.css" />
+    <Content Include="quotes\templates\quotes\index.html" />
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="manage.py" />
+    <Compile Include="quotes\filters.py" />
+    <Compile Include="quotes\forms.py" />
+    <Compile Include="quotes\logging.py" />
+    <Compile Include="quotes\management\commands\getquote.py" />
+    <Compile Include="quotes\management\commands\__init__.py" />
+    <Compile Include="quotes\management\__init__.py" />
+    <Compile Include="quotes\migrations\0001_initial.py" />
+    <Compile Include="quotes\migrations\__init__.py" />
+    <Compile Include="quotes\models.py" />
+    <Compile Include="quotes\rest.py" />
+    <Compile Include="quotes\settings.py" />
+    <Compile Include="quotes\templatetags\slice_pages.py" />
+    <Compile Include="quotes\templatetags\spacify.py" />
+    <Compile Include="quotes\templatetags\__init__.py" />
+    <Compile Include="quotes\tests.py" />
+    <Compile Include="quotes\urls.py" />
+    <Compile Include="quotes\views.py" />
+    <Compile Include="quotes\wsgi.py" />
+    <Compile Include="quotes\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="quotes" />
+    <Folder Include="quotes\management" />
+    <Folder Include="quotes\management\commands" />
+    <Folder Include="quotes\migrations" />
+    <Folder Include="quotes\static\" />
+    <Folder Include="quotes\static\quotes" />
+    <Folder Include="quotes\templates\" />
+    <Folder Include="quotes\templates\quotes" />
+    <Folder Include="quotes\templatetags" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="venv\">
+      <Id>{2c932e09-10a0-45b4-abaa-49e9044cbda0}</Id>
+      <BaseInterpreter>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</BaseInterpreter>
+      <Version>2.7</Version>
+      <Description>venv (Python 2.7)</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <LibraryPath>Lib\</LibraryPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
