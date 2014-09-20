@@ -1,4 +1,7 @@
+from __future__ import absolute_import
+
 import datetime
+import logging
 
 import mock
 from django.test import TestCase
@@ -7,7 +10,8 @@ from django.core.management import call_command
 
 from . import views, rest
 from .templatetags.spacify import spacify
-from models import Quote
+from .templatetags.slice_pages import slice_pages
+from .models import Quote
 
 
 class ModelsTests(TestCase):
@@ -128,6 +132,11 @@ class TemplateTagsTests(TestCase):
 
 
 class GetQuoteCommandTests(TestCase):
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
+
+    def tearDown(self):
+        logging.disable(logging.NOTSET)
 
     def fake_request(url, timeout=None):
         class FakeRequest(object):
@@ -142,6 +151,12 @@ class GetQuoteCommandTests(TestCase):
         return FakeRequest()
 
     @mock.patch('requests.get', fake_request)
-    def test_getquote(self):
+    def test_getquote_new_quote(self):
         call_command('getquote')
+
+        quote = Quote.objects.all().order_by('-pk')[0]
+        self.assertEqual(quote.quote, 'test quote123')
+
+    @mock.patch('requests.get', fake_request)
+    def test_getquote_already_exists(self):
         call_command('getquote')
