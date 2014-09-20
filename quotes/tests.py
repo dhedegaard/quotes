@@ -36,10 +36,6 @@ class UrlsTests(TestCase):
         index_page = resolve('/')
         self.assertEqual(index_page.func, views.index)
 
-    def test_index_page(self):
-        index_page_page = resolve('/page/10/')
-        self.assertEqual(index_page_page.func, views.index)
-
     def test_random(self):
         random_page = resolve('/random/')
         self.assertEqual(random_page.func, views.random)
@@ -57,18 +53,6 @@ class ViewTests(TestCase):
 
     def test_index(self):
         response = self.client.get('/')
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'quotes/index.html')
-
-    def test_above_max_page(self):
-        response = self.client.get('/page/9999999999/')
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'quotes/index.html')
-
-    def test_page_zero(self):
-        response = self.client.get('/page/0/')
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'quotes/index.html')
