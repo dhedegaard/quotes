@@ -142,4 +142,8 @@ class GetQuoteCommandTests(TestCase):
 
     @mock.patch('requests.get', fake_request)
     def test_getquote_already_exists(self):
+        existing_quote = Quote.objects.create(quote='test quote123')
+
         call_command('getquote')
+
+        self.assertEqual(Quote.objects.all().count(), 1)
