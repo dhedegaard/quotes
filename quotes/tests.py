@@ -10,6 +10,7 @@ from django.core.management import call_command
 
 from . import views, rest
 from .templatetags.spacify import spacify
+from .templatetags.slice_pages import slice_pages
 from .models import Quote
 
 
@@ -112,6 +113,11 @@ class TemplateTagsTests(TestCase):
 
     def test_spacify3(self):
         self.assertEqual(spacify('hej<br />dav'), 'hej<br />dav')
+
+    def test_slice_pages(self):
+        mocked_pages = mock.MagicMock()
+        slice_pages(mocked_pages)
+        self.assertTrue(mock.call.current() in mocked_pages.method_calls)
 
 
 class GetQuoteCommandTests(TestCase):
