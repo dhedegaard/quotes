@@ -1,5 +1,7 @@
 # Slashdot Quotes #
 
+[![Build Status](https://drone.io/bitbucket.org/dennishedegaard/quotes/status.png)](https://drone.io/bitbucket.org/dennishedegaard/quotes/latest)
+
 The code behind my database of quotes from the bottom of the slashdot site.
 
 A running version can be found here: http://sd.dhedegaard.dk/
@@ -8,6 +10,5 @@ A running version can be found here: http://sd.dhedegaard.dk/
 
 The project is implemented in python using django, so to get the code up and running you need the following.
 
-- A database backend compatible with django.
-- A webserver for running WSGI.
-- Some sort of crontab for running the "getquote" command.
+- Install requirements: $ pip install -r requirements.txt
+- Run $ manage.py runserver - or use uwsgi/apache with mod_wsgi or similar
