@@ -1,6 +1,7 @@
 # Slashdot Quotes #
 
-[![Build Status](https://drone.io/bitbucket.org/dennishedegaard/quotes/status.png)](https://drone.io/bitbucket.org/dennishedegaard/quotes/latest)
+[![Build Status](https://travis-ci.org/dhedegaard/quotes.svg?branch=master)](https://travis-ci.org/dhedegaard/quotes)
+[![Coverage Status](https://coveralls.io/repos/dhedegaard/quotes/badge.svg?branch=master)](https://coveralls.io/r/dhedegaard/quotes?branch=master)
 
 The code behind my database of quotes from the bottom of the slashdot site.
 
