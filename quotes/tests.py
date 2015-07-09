@@ -62,19 +62,19 @@ class RestViewTests(TestCase):
         response = self.client.get('/rest/random/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, '["test123"]')
+        self.assertEqual(response.content, b'["test123"]')
 
     def test_latest(self):
         response = self.client.get('/rest/latest/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, '["test123"]')
+        self.assertEqual(response.content, b'["test123"]')
 
     def test_latest_with_count(self):
         response = self.client.get('/rest/latest/?count=1')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, '["test123"]')
+        self.assertEqual(response.content, b'["test123"]')
 
     def test_latest_count_above_limit(self):
         response = self.client.get('/rest/latest/?count=300')
