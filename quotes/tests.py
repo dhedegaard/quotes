@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import datetime
 import logging
 
 import mock
@@ -12,23 +11,6 @@ from . import views, rest
 from .templatetags.spacify import spacify
 from .templatetags.slice_pages import slice_pages
 from .models import Quote
-
-
-class ModelsTests(TestCase):
-
-    def test_quote_create(self):
-        quote = Quote.objects.create(quote='testquote')
-
-        self.assertIsInstance(quote.id, int)
-        self.assertIsInstance(quote.created, datetime.datetime)
-        self.assertEqual(quote.quote, 'testquote')
-
-    def test_quote_unicode(self):
-        quote = Quote.objects.create(quote='testquote2')
-
-        self.assertEqual(
-            str(quote), '[%s, %s, testquote2]' % (
-                quote.id, quote.created))
 
 
 class UrlsTests(TestCase):
@@ -148,7 +130,7 @@ class GetQuoteCommandTests(TestCase):
 
     @mock.patch('requests.get', fake_request)
     def test_getquote_already_exists(self):
-        existing_quote = Quote.objects.create(quote='test quote123')
+        Quote.objects.create(quote='test quote123')
 
         call_command('getquote')
 
