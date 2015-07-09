@@ -82,7 +82,7 @@ class RestViewTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.content,
-            'count: * Ensure this value is less than or equal to 200.')
+            b'count: * Ensure this value is less than or equal to 200.')
 
 
 class TemplateTagsTests(TestCase):
