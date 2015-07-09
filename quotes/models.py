@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.db import models
 
 
@@ -11,5 +12,5 @@ class Quote(models.Model):
         return '[%s, %s, %s]' % (self.id, self.created, self.quote)
 
     class Meta:
-        db_table = u'quotes'
+        db_table = 'quotes'
         ordering = ('-id', )
