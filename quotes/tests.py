@@ -98,6 +98,7 @@ class TemplateTagsTests(TestCase):
 
     def test_slice_pages(self):
         mocked_pages = mock.MagicMock()
+        mocked_pages.current().number.return_value = 10
         slice_pages(mocked_pages)
         self.assertTrue(mock.call.current() in mocked_pages.method_calls)
 
