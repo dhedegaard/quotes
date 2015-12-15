@@ -2,6 +2,6 @@ Django==1.9
 beautifulsoup4==4.4.1
 mock==1.3.0
 pytz==2015.7
-requests==2.8.1
+requests==2.9.0
 -e git://github.com/gungorbudak/django-endless-pagination.git@58437d6cebee64c4ce3dec4854dca0cc4f64baa4#egg=django-endless-pagination
 django-filter==0.11.0
