@@ -134,7 +134,7 @@ INSTALLED_APPS = (
 
     # 3rd party
     'django_filters',
-    'endless_pagination',
+    'el_pagination',
 
     # Quotes specific
     'quotes',
