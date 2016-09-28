@@ -4,4 +4,4 @@ mock==2.0.0
 pytz==2016.6.1
 requests==2.11.1
 django-el-pagination==3.0.1
-django-filter==0.15.0
+django-filter==0.15.1
