@@ -14,9 +14,6 @@ def random(request):
 
 
 def index(request):
-    '''
-    This method is used as a url handler for django.
-    '''
     quotes = QuoteFilter(request.GET, queryset=Quote.objects.all())
 
     return render(request, 'quotes/index.html', {

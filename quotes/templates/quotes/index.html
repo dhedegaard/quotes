@@ -59,9 +59,9 @@
       </div>
       {% endfor %}
       {% if quotes %}
-        {% paginate 20 quotes %}
+        {% paginate 20 quotes.qs as quotes_qs %}
         {% get_pages %}
-        {% for quote in quotes %}
+        {% for quote in quotes_qs %}
           <div class="well"
                data-first-seen="{{ quote.created|date:'Y-m-d H:i:s' }}">
             {{ quote.quote|spacify|linebreaksbr }}
@@ -129,9 +129,9 @@
       {% else %}
       <div class="alert alert-warning">
         {% if quotes.form.quote.value %}
-        <p>No quotes on the given search string found.</p>
+          <p>No quotes on the given search string found.</p>
         {% else %}
-        <p>No quotes found.</p>
+          <p>No quotes found.</p>
         {% endif %}
       </div>
       {% endif %}
