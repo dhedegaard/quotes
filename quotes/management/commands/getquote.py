@@ -21,7 +21,7 @@ class Command(BaseCommand):
             body = req.text
 
         # Get quote from the body.
-        soup = BS(body)
+        soup = BS(body, 'html.parser')
         quote = soup.find('blockquote').p.text
 
         # Save the quote, if it does not already exist.
