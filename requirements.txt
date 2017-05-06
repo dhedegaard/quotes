@@ -1,4 +1,4 @@
-Django==1.11
+Django==1.11.1
 beautifulsoup4==4.5.3
 mock==2.0.0
 pytz==2017.2
