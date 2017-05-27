@@ -2,6 +2,6 @@ Django==1.11.1
 beautifulsoup4==4.6.0
 mock==2.0.0
 pytz==2017.2
-requests==2.16.0
+requests==2.16.2
 django-el-pagination==3.1.0
 django-filter==1.0.4
