@@ -1,26 +1,26 @@
 language: python
 
 python:
-- 2.7
 - 3.4
 - 3.5
-- pypy
+- 3.6
 - pypy3
 
 env:
-- DJANGO_VERSION=1.8.4
-- DJANGO_VERSION=1.9
-- DJANGO_VERSION=1.10
+- DJANGO_VERSION=1.11.8
+- DJANGO_VERSION=2.0.1
+- DJANGO_VERSION=LATEST
 
 matrix:
   allow_failures:
-    - python: pypy
     - python: pypy3
+    - env: DJANGO_VERSION=LATEST
 
 install:
 - pip install -q -r requirements.txt
 - pip install -q coveralls codecov
-- pip install -q Django==$DJANGO_VERSION
+- if [[ $DJANGO_VERSION != "LATEST" ]]; then pip install -q Django==$DJANGO_VERSION; fi
+- if [[ $DJANGO_VERSION == "LATEST" ]]; then pip install -U Django; fi
 
 script: coverage run --source=quotes manage.py test
 

@@ -4,7 +4,7 @@ import logging
 
 import mock
 from django.test import TestCase
-from django.core.urlresolvers import resolve
+from django.urls import resolve
 from django.core.management import call_command
 
 from . import views, rest
