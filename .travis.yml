@@ -15,6 +15,7 @@ matrix:
   allow_failures:
     - python: pypy3
     - env: DJANGO_VERSION=LATEST
+    - python: 3.7
 
 install:
 - pip install -q -r requirements.txt
