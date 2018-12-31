@@ -1,5 +1,5 @@
 Django==2.1.4
-beautifulsoup4==4.6.3
+beautifulsoup4==4.7.0
 mock==2.0.0
 pytz==2018.7
 requests==2.21.0
