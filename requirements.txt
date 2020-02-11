@@ -3,5 +3,5 @@ beautifulsoup4==4.8.2
 mock==4.0.1
 pytz==2019.3
 requests==2.22.0
-django-el-pagination==3.2.4
+django-el-pagination==3.3.0
 django-filter==2.2.0
